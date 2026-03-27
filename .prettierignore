@@ -1,0 +1,15 @@
+# Pastas de dependências e build
+node_modules
+build
+dist
+coverage
+
+# Arquivos de log e sistema
+npm-debug.log
+yarn-error.log
+.DS_Store
+out
+
+# Arquivos que não precisam de formatação estética
+package-lock.json
+yarn.lock
