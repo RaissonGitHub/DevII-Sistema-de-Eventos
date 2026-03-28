@@ -2,11 +2,15 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import IFLogo from '../common/IFLogo';
-import { MdEmail } from 'react-icons/md';
 import { MdPhone } from 'react-icons/md';
 import { MdLocationPin } from 'react-icons/md';
 
-export default function Footer({ telefone, endereco, ano, campus }) {
+export default function Footer({
+    telefone = '',
+    endereco = '',
+    ano = 2026,
+    campus = '',
+}) {
     return (
         <>
             <Container
@@ -25,10 +29,12 @@ export default function Footer({ telefone, endereco, ano, campus }) {
                             width={250}
                         ></IFLogo>
                     </Col>
-                    <Col xs={6}>.</Col>
+                    <Col xs={6}></Col>
                     <Col className="d-flex flex-colum justify-content-center align-items-center">
                         <div className="d-flex flex-column">
-                            <p className="fs-4 text-white fw-bold">Contato e Suporte</p>
+                            <p className="fs-4 text-white fw-bold">
+                                Contato e Suporte
+                            </p>
 
                             <p className="text-white d-flex align-items-end">
                                 <MdPhone

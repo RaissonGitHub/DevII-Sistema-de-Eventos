@@ -4,26 +4,27 @@ import { MdOutlineSearch } from 'react-icons/md';
 import Card from './Card';
 
 export default function EventCard({
-    title,
-    dateRange,
-    phaseLabel,
-    phaseColor = '#106D47',
-    description,
-    detailsLabel = 'Ver Detalhes',
+    corCard = "#016B3F",
+    titulo,
+    data,
+    faseAtual,
+    corFase = '#106D47',
+    descricao,
+    textoBotao = 'Ver Detalhes',
     onDetailsClick,
     Icon,
 }) {
     return (
-        <Card>
+        <Card corBorda={corCard}>
             <div className="d-flex ms-5 mt-5 align-items-center">
-                <h3 className="fw-bold">{title}</h3>
-                <span className="ms-3 fw-bold">Realização: {dateRange}</span>
+                <h3 className="fw-bold">{titulo}</h3>
+                <span className="ms-3 fw-bold">Realização: {data}</span>
             </div>
             <div className="d-flex ms-5  align-items-center mt-2">
                 <span className="fw-bold">
                     Fase atual:{' '}
-                    <span className="fw-bold" style={{ color: phaseColor }}>
-                        {phaseLabel}
+                    <span className="fw-bold" style={{ color: corFase }}>
+                        {faseAtual}
                     </span>
                 </span>
                 <div className="d-flex w-75 justify-content-end">
@@ -38,7 +39,7 @@ export default function EventCard({
                         ) : (
                             <MdOutlineSearch size={20} />
                         )}
-                        {detailsLabel}
+                        {textoBotao}
                     </Button>
                 </div>
             </div>
@@ -46,7 +47,7 @@ export default function EventCard({
                 <span className="fw-bold">Descrição:</span>
             </div>
             <div className="d-flex ms-5  align-items-center mt-2">
-                <span className="fw-light text-break w-50">{description}</span>
+                <span className="fw-light text-break w-50">{descricao}</span>
             </div>
         </Card>
     );
