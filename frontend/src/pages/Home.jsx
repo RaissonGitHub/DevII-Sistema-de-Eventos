@@ -3,14 +3,13 @@ import Footer from '../components/footer/Footer';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
-import EventoCard from '../components/common/EventCard';
+import EventoCard from '../components/common/EventoCard';
 import { MdOutlineSearch } from 'react-icons/md';
-import AtracaoCard from '../components/common/AtracaoCard';
 
 export default function Home({ campus = 'Campus Restinga' }) {
     return (
         <>
-            <NavBar></NavBar>
+            <NavBar />
             <main className="flex-fill">
                 <Container fluid>
                     <Row>
@@ -26,28 +25,13 @@ export default function Home({ campus = 'Campus Restinga' }) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col className="d-flex justify-content-center my-5">
-                            {/* Exemplo de card */}
-                            {/* <AtracaoCard
-                                corCard="#FFC107"
-                                hora="8:30"
-                                sessao="Sessão 1"
-                                titulo="Desenvolvimento de Concreto Sustentável com Resíduos"
-                                autores={['Carlos Lima', 'Ana Souza']}
-                                local="Sala 304 - Bloco 3"
-                                tags={[
-                                    {
-                                        corFundo: '#3D74FF',
-                                        texto: 'Apresentação Oral',
-                                        corTexto: '#fff',
-                                    },
-                                    {
-                                        corFundo: '#0DCAF0',
-                                        texto: 'Engenharias',
-                                        corTexto: '#fff',
-                                    },
-                                ]}
-                            /> */}
+                        <Col
+                            xs={12}
+                            md={10}
+                            lg={8}
+                            className="mx-auto d-flex flex-column align-items-center my-5 gap-3"
+                        >
+                            {/* Exemplo de card: Faça um map para gerar outros com dados reais*/}
                             {/* <EventoCard
                                 titulo="Mostra"
                                 data="De 20/09 a 22/09"
@@ -58,17 +42,19 @@ export default function Home({ campus = 'Campus Restinga' }) {
                                 }
                                 textoBotao="Ver Detalhes"
                                 icon={MdOutlineSearch}
-                            /> */}
+                            />
+                             */}
                         </Col>
                     </Row>
                 </Container>
             </main>
+            {/* Mude esses dados posteriormente */}
             <Footer
                 telefone={'(51) 3333-1234'}
                 endereco={'Rua Alberto Hoffmann, 285'}
                 ano={2026}
                 campus={campus}
-            ></Footer>
+            />
         </>
     );
 }

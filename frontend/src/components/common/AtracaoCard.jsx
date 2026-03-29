@@ -23,9 +23,14 @@ export default function AtracaoCard({
     return (
         <Card corBorda={corCard}>
             <Container fluid>
+                {/* Esse componente está dividido em 3 colunas (Cols) */}
+                {/* A primeira contém o horario e sessão */}
+                {/* A segunda contém tags, título, autores e local */}
+                {/* A terceira contém os botões */}
                 <Row>
+                    {/* 1 coluna hora e sessão */}
                     <Col
-                        className="ms-5 mt-5 d-flex flex-column align-items-center p-0"
+                        className="ms-4 mt-5 d-flex flex-column align-items-center justify-content-center p-0"
                         xs={2}
                     >
                         <span className="fw-bold fs-3">{hora}</span>
@@ -33,6 +38,7 @@ export default function AtracaoCard({
                             <span className="fw-bold fs-4">{sessao}</span>
                         )}
                     </Col>
+                    {/* 2 coluna tags título autores local */}
                     <Col xs={6}>
                         <Row>
                             <Col className="mt-4 d-flex gap-3">
@@ -78,6 +84,7 @@ export default function AtracaoCard({
                             </Col>
                         </Row>
                     </Col>
+                    {/* 3 coluna botões */}
                     <Col className="d-flex flex-column justify-content-center gap-4">
                         <Row>
                             <Col className="text-center">
