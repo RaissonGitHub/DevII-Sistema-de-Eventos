@@ -21,13 +21,13 @@ export default function NavBar() {
                     className="justify-content-center"
                 >
                     <Nav className="gap-5">
-                        <Nav.Link href="#home" className="text-white">
+                        <Nav.Link href="home" className="text-white">
                             Home
                         </Nav.Link>
-                        {/* <Nav.Link href="#link" className="text-white">
-                            Meus Eventos
+                         <Nav.Link href="permsGroups" className="text-white">
+                            Permissões mock
                         </Nav.Link>
-                        <Nav.Link href="#link" className="text-white">
+                        {/*<Nav.Link href="#link" className="text-white">
                             Avaliações
                         </Nav.Link>
                         <Nav.Link href="#link" className="text-white">

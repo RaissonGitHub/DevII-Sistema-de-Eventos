@@ -32,7 +32,7 @@ export default function Home({ campus = 'Campus Restinga' }) {
                             className="mx-auto d-flex flex-column align-items-center my-5 gap-3"
                         >
                             {/* Exemplo de card: Faça um map para gerar outros com dados reais*/}
-                            {/* <EventoCard
+                            {<EventoCard
                                 titulo="Mostra"
                                 data="De 20/09 a 22/09"
                                 faseAtual="Inscrições abertas"
@@ -43,7 +43,7 @@ export default function Home({ campus = 'Campus Restinga' }) {
                                 textoBotao="Ver Detalhes"
                                 icon={MdOutlineSearch}
                             />
-                             */}
+                            }
                         </Col>
                     </Row>
                 </Container>
