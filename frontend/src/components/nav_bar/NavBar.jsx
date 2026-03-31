@@ -24,7 +24,7 @@ export default function NavBar() {
                         <Nav.Link href="home" className="text-white">
                             Home
                         </Nav.Link>
-                         <Nav.Link href="permsGroups" className="text-white">
+                         <Nav.Link href="permissoesGrupos" className="text-white">
                             Permissões mock
                         </Nav.Link>
                         {/*<Nav.Link href="#link" className="text-white">

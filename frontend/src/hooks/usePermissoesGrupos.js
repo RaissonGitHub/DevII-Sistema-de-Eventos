@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { pegarGrupo, atualizarPermissoes } from '../services/groups_service';
+import { pegarGrupo, atualizarPermissoes } from '../services/gruposService';
 
 export function useGroupPermissions(perms) {
     const [selectedGroupId, setSelectedGroupId] = useState('');
@@ -37,16 +37,30 @@ export function useGroupPermissions(perms) {
         return [doGrupo, naoDoGrupo];
     }, [editingPermissions, perms]);
 
+    const originalPermissions = useMemo(() => {
+        if (!selectedGroup) return new Set();
+        return new Set(selectedGroup.permissions.map((p) => p.id));
+    }, [selectedGroup]);
+
+    const hasChanges = useMemo(() => {
+        if (!selectedGroup) return false;
+        if (editingPermissions.size !== originalPermissions.size) return true;
+        for (const id of editingPermissions) {
+            if (!originalPermissions.has(id)) return true;
+        }
+        return false;
+    }, [editingPermissions, originalPermissions, selectedGroup]);
+
     const handleAddPermission = (permId) => {
-        setEditingPermissions((prev) => new Set([...prev, permId]));
+        const next = new Set(editingPermissions);
+        next.add(permId);
+        setEditingPermissions(next);
     };
 
     const handleRemovePermission = (permId) => {
-        setEditingPermissions((prev) => {
-            const next = new Set(prev);
-            next.delete(permId);
-            return next;
-        });
+        const next = new Set(editingPermissions);
+        next.delete(permId);
+        setEditingPermissions(next);
     };
 
     const handleSave = async () => {
@@ -56,13 +70,14 @@ export function useGroupPermissions(perms) {
         try {
             const permissionIds = Array.from(editingPermissions);
             await atualizarPermissoes(selectedGroupId, permissionIds);
-            setMessage({ type: 'success', text: 'Permissões salvas com sucesso!' });
+            setMessage({
+                type: 'success',
+                text: 'Permissões salvas com sucesso!',
+            });
 
             // atualiza grupo
             const group = await pegarGrupo(selectedGroupId);
             setSelectedGroup(group);
-
-            setTimeout(() => setMessage(''), 3000);
         } catch (erro) {
             console.error('Falha ao salvar:', erro);
             setMessage({ type: 'danger', text: 'Erro ao salvar permissões' });
@@ -91,6 +106,7 @@ export function useGroupPermissions(perms) {
         handleAddPermission,
         handleRemovePermission,
         handleSave,
-        handleReset
+        handleReset,
+        hasChanges,
     };
 }

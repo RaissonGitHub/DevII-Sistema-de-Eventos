@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { pegarPermissoes } from '../services/perms_service';
+import { pegarPermissoes } from '../services/permissoesService';
 
 export function usePermissoes() {
     const [perms, setPerms] = useState([]);
@@ -15,6 +15,5 @@ export function usePermissoes() {
         }
         fetchPerms();
     }, []);
-    // console.log(perms)
     return { perms };
 }

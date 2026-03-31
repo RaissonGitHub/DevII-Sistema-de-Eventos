@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { pegarTokenCsrf } from '../services/csrf_service';
+import { pegarTokenCsrf } from '../services/csrfService';
 
 export function useCsrf() {
     const [csrfToken, setCsrfToken] = useState('');
@@ -8,7 +8,7 @@ export function useCsrf() {
         async function fetchCsrfToken() {
             try {
                 const data = await pegarTokenCsrf();
-                setCsrfToken(data);
+                setCsrfToken(data?.csrfToken || '');
             } catch (erro) {
                 console.error('erro', erro);
             }
@@ -16,5 +16,5 @@ export function useCsrf() {
         fetchCsrfToken();
     }, []);
 
-    return csrfToken;
+    return { csrfToken };
 }

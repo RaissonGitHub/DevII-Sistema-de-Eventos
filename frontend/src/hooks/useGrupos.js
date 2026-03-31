@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { pegarGrupos } from '../services/groups_service';
+import { pegarGrupos } from '../services/gruposService';
 
 export function useGrupos() {
     const [grupos, setGrupos] = useState([]);
@@ -15,6 +15,5 @@ export function useGrupos() {
         }
         fetchGrupos();
     }, []);
-    // console.log(grupos)
-    return {grupos};
+    return { grupos };
 }
