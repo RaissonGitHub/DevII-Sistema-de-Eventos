@@ -15,6 +15,6 @@ export function useGrupos() {
         }
         fetchGrupos();
     }, []);
-    console.log(grupos)
+    // console.log(grupos)
     return {grupos};
 }

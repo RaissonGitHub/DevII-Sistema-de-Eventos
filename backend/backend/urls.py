@@ -19,15 +19,16 @@ from django.contrib import admin
 from django.urls import path
 
 from .views.perms_view import PermissaoListView
-from .views.groups_view import GrupoListView
+from .views.groups_view import GrupoListView, GrupoPermissoesView
 from .views import csrf_token_view as views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
     # paths relacionados a permissões e grupos de permissões
     path("api/permissoes/", PermissaoListView.as_view()),
     path("api/grupos/", GrupoListView.as_view()),
+    path("api/grupos/<int:pk>/", GrupoPermissoesView.as_view()),
     # endpoint pra pegar o csrf token, que o frontend vai usar pra autenticação
     path("api/csrf/", views.get_csrf_token),
 ]
