@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { pegarUsers, atualizarGrupos } from '../services/userService';
-import { pegarGrupo } from '../services/groups_service';
+import { pegarGrupo, atualizarUsuarios } from '../services/gruposService';
 
-export function useUsersGrupos(perms) {
+export function useUsersGrupos(users) {
     const [selectedGroupId, setSelectedGroupId] = useState('');
     const [selectedGroup, setSelectedGroup] = useState(null);
     const [editingUsers, setEditingUsers] = useState(new Set());
@@ -20,7 +19,7 @@ export function useUsersGrupos(perms) {
             try {
                 const group = await pegarGrupo(selectedGroupId);
                 setSelectedGroup(group);
-                const usersId = new Set(group.permissions.map((p) => p.id));
+                const usersId = new Set((group.users || []).map((u) => u.id));
                 setEditingUsers(usersId);
                 setMessage('');
             } catch (erro) {
@@ -32,35 +31,35 @@ export function useUsersGrupos(perms) {
         fetchGroup();
     }, [selectedGroupId]);
 
-    const [permsDoGrupo, permsNaoDoGrupo] = useMemo(() => {
-        const doGrupo = perms.filter((p) => editingUsers.has(p.id));
-        const naoDoGrupo = perms.filter((p) => !editingUsers.has(p.id));
+    const [usersDoGrupo, usersNaoDoGrupo] = useMemo(() => {
+        const doGrupo = users.filter((u) => editingUsers.has(u.id));
+        const naoDoGrupo = users.filter((u) => !editingUsers.has(u.id));
         return [doGrupo, naoDoGrupo];
-    }, [editingUsers, perms]);
+    }, [editingUsers, users]);
 
-    const originalPermissions = useMemo(() => {
+    const originalUsers = useMemo(() => {
         if (!selectedGroup) return new Set();
-        return new Set(selectedGroup.permissions.map((p) => p.id));
+        return new Set(selectedGroup.users.map((u) => u.id));
     }, [selectedGroup]);
 
     const hasChanges = useMemo(() => {
         if (!selectedGroup) return false;
-        if (editingUsers.size !== originalPermissions.size) return true;
+        if (editingUsers.size !== originalUsers.size) return true;
         for (const id of editingUsers) {
-            if (!originalPermissions.has(id)) return true;
+            if (!originalUsers.has(id)) return true;
         }
         return false;
-    }, [editingUsers, originalPermissions, selectedGroup]);
+    }, [editingUsers, originalUsers, selectedGroup]);
 
-    const handleAddPermission = (permId) => {
+    const handleAddUser = (userId) => {
         const next = new Set(editingUsers);
-        next.add(permId);
+        next.add(userId);
         setEditingUsers(next);
     };
 
-    const handleRemovePermission = (permId) => {
+    const handleRemoveUser = (userId) => {
         const next = new Set(editingUsers);
-        next.delete(permId);
+        next.delete(userId);
         setEditingUsers(next);
     };
 
@@ -69,11 +68,11 @@ export function useUsersGrupos(perms) {
 
         setLoading(true);
         try {
-            const permissionIds = Array.from(editingUsers);
-            await atualizarPermissoes(selectedGroupId, permissionIds);
+            const userIds = Array.from(editingUsers);
+            await atualizarUsuarios(selectedGroupId, userIds);
             setMessage({
                 type: 'success',
-                text: 'Permissões salvas com sucesso!',
+                text: 'Usuários salvos com sucesso!',
             });
 
             // atualiza grupo
@@ -81,7 +80,7 @@ export function useUsersGrupos(perms) {
             setSelectedGroup(group);
         } catch (erro) {
             console.error('Falha ao salvar:', erro);
-            setMessage({ type: 'danger', text: 'Erro ao salvar permissões' });
+            setMessage({ type: 'danger', text: 'Erro ao salvar usuários' });
         } finally {
             setLoading(false);
         }
@@ -89,7 +88,7 @@ export function useUsersGrupos(perms) {
 
     const handleReset = () => {
         if (selectedGroup) {
-            const usersId = new Set(selectedGroup.permissions.map((p) => p.id));
+            const usersId = new Set(selectedGroup.users.map((u) => u.id));
             setEditingUsers(usersId);
             setMessage('');
         }
@@ -99,13 +98,13 @@ export function useUsersGrupos(perms) {
         selectedGroupId,
         setSelectedGroupId,
         selectedGroup,
-        permsDoGrupo,
-        permsNaoDoGrupo,
+        usersDoGrupo,
+        usersNaoDoGrupo,
         loading,
         message,
         setMessage,
-        handleAddPermission,
-        handleRemovePermission,
+        handleAddUser,
+        handleRemoveUser,
         handleSave,
         handleReset,
         hasChanges,

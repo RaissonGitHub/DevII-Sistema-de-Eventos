@@ -12,6 +12,10 @@ export default function Vinculo({
     onAcao1,
     onAcao2,
     selecionado,
+    renderItem = (item) => item.name || item.username,
+    // esse renderItem é só pq o user n tem "name", mas sim "username", 
+    // então ele ta aq por isso, mas ele filtra se o item tem name ou username, 
+    // ent ta sereno
 }) {
     return (
         <>
@@ -40,11 +44,12 @@ export default function Vinculo({
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>{dados1.map((item) => (
+                        <tbody>
+                            {dados1.map((item) => (
                                 <tr key={item.id}>
                                     <td>
                                         <div className="d-flex">
-                                            <span className="mx-auto">{item.name}</span>
+                                            <span className="mx-auto">{renderItem(item)}</span>
                                             <FaCircleArrowRight
                                                 className="text-success"
                                                 size={20}
@@ -53,7 +58,8 @@ export default function Vinculo({
                                         </div>
                                     </td>
                                 </tr>
-                            ))}</tbody>
+                            ))}
+                        </tbody>
                     </Table>
                 </div>
                 <div
@@ -80,20 +86,22 @@ export default function Vinculo({
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>{selecionado ? dados2.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>
-                                            <div className="d-flex">
-                                                <FaCircleArrowLeft
-                                                    className="text-success"
-                                                    size={20}
-                                                    onClick={() => onAcao1(item.id)}
-                                                />
-                                                <span className="mx-auto">{item.name}</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )) : null}</tbody>
+                        <tbody>
+                            {selecionado ? dados2.map((item) => (
+                                <tr key={item.id}>
+                                    <td>
+                                        <div className="d-flex">
+                                            <FaCircleArrowLeft
+                                                className="text-success"
+                                                size={20}
+                                                onClick={() => onAcao1(item.id)}
+                                            />
+                                            <span className="mx-auto">{renderItem(item)}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )) : null}
+                        </tbody>
                     </Table>
                 </div>
             </div>

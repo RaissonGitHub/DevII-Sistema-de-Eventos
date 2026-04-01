@@ -6,7 +6,7 @@ from api.serializers.users_serializer import *
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
-    serializer_class = GrupoSerializer
+    serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
 

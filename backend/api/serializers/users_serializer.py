@@ -1,36 +1,42 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-
-from .groups_serializer import *
+from django.contrib.auth.models import User, Group
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "user"]
+        fields = ["id", "username"]
 
 
 class UserGrupoSerializer(serializers.ModelSerializer):
-    groups = GrupoSerializer(many=True, read_only=True)
+    groups = serializers.SerializerMethodField()
 
     class Meta:
-        model = Group
-        fields = ["id", "name", "groups"]
+        model = User
+        fields = ["id", "username", "groups"]
+
+    def get_groups(self, obj):
+        from .groups_serializer import GrupoSerializer
+
+        return GrupoSerializer(obj.groups.all(), many=True).data
 
 
 class UserGrupoUpdateSerializer(serializers.ModelSerializer):
     group_id = serializers.PrimaryKeyRelatedField(
         queryset=Group.objects.all(), many=True, write_only=True, required=False
     )
-    groups = GrupoSerializer(many=True, read_only=True)
+    groups = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["id", "user", "group_id", "groups"]
+        fields = ["id", "username", "group_id", "groups"]
+
+    def get_groups(self, obj):
+        from .groups_serializer import GrupoSerializer
+
+        return GrupoSerializer(obj.groups.all(), many=True).data
 
     def update(self, instance, validated_data):
-        print(instance)
-        print(validated_data)
         group_id = validated_data.pop("group_id", None)
 
         if group_id is not None:

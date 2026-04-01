@@ -9,33 +9,34 @@ import { Link } from 'react-router';
 import Select from '../components/common/Select';
 import { useState } from 'react';
 
-
-
 import { useCsrf } from '../hooks/useCsrf';
 import { useGrupos } from '../hooks/useGrupos';
-import { usePermissoes } from '../hooks/usePermissoes';
-import { useGroupPermissions } from '../hooks/usePermissoesGrupos';
+import { useUsers } from '../hooks/useUsers';
+import { useUsersGrupos } from '../hooks/useUsersGrupos';
 import Vinculo from '../components/common/Vinculo';
 
 export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
     const { csrfToken } = useCsrf();
     const { grupos } = useGrupos();
-    const { perms } = usePermissoes();
+    const { users } = useUsers();
 
     const {
         selectedGroupId,
         setSelectedGroupId,
-        permsDoGrupo,
-        permsNaoDoGrupo,
+        usersDoGrupo,
+        usersNaoDoGrupo,
         loading,
         message,
         setMessage,
-        handleAddPermission,
-        handleRemovePermission,
+        handleAddUser,
+        handleRemoveUser,
         handleSave,
+        handleReset,
         hasChanges,
-    } = useGroupPermissions(perms);
+    } = useUsersGrupos(users);
+
     const [search, setSearch] = useState('');
+
     return (
         <>
             <NavBar />
@@ -51,43 +52,50 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                     <Row>
                         <Col className="d-flex">
                             <div className="w-25">
-                                <h3 className="text-success fw-bold fs-5 ">
+                                <h3 className="text-success fw-bold fs-5">
                                     Grupo
                                 </h3>
-                                
                             </div>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                               <div className="d-flex align-items-start justify-content-start">
-                                <Select className='w-50'
+                            <div className="d-flex align-items-start justify-content-start">
+                                <Select
+                                    className="w-50"
                                     grupos={grupos}
                                     value={selectedGroupId}
                                     onChange={(event) =>
                                         setSelectedGroupId(event.target.value)
                                     }
                                 />
-                                <Button className='ms-4 h-50' variant="success" style={{background:'#006B3F', }} >
-                                    <Link to={'/permissoesGrupos'} className='text-white fw-bold text-decoration-none'>Atribuir Permissões</Link>
+                                <Button
+                                    className="ms-4 h-50"
+                                    variant="success"
+                                    style={{ background: '#006B3F' }}
+                                >
+                                    <Link to={'/permissoesGrupos'} className="text-white fw-bold text-decoration-none">
+                                        Atribuir Permissões
+                                    </Link>
                                 </Button>
-                            </div>     
+                            </div>
                         </Col>
                     </Row>
                     <Row className="mt-3">
                         <Col>
                             <span className="fs-5 fw-semibold">
-                                Buscar permissões
+                                Buscar pessoas
                             </span>
                             <input
                                 className="form-control"
                                 type="text"
-                                placeholder="Digite para filtrar permissões"
+                                placeholder="Digite para filtrar pessoas"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </Col>
                     </Row>
+
                     <Row className="mt-5">
                         <Col>
                             <Vinculo
@@ -95,23 +103,24 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                                 cabecario2="Grupo"
                                 corTexto="#fff"
                                 corCabecario="#006B3F"
-                                dados1={permsDoGrupo.filter((p) =>
-                                    p.name
+                                dados1={usersNaoDoGrupo.filter((u) =>
+                                    `${u.username}`
                                         .toLowerCase()
-                                        .includes(search.trim().toLowerCase()),
+                                        .includes(search.trim().toLowerCase())
                                 )}
-                                dados2={permsNaoDoGrupo.filter((p) =>
-                                    p.name
+                                dados2={usersDoGrupo.filter((u) =>
+                                    `${u.username}`
                                         .toLowerCase()
-                                        .includes(search.trim().toLowerCase()),
+                                        .includes(search.trim().toLowerCase())
                                 )}
-                                onAcao1={handleAddPermission}
-                                onAcao2={handleRemovePermission}
+                                onAcao1={handleRemoveUser}
+                                onAcao2={handleAddUser}
                                 save={handleSave}
                                 selecionado={selectedGroupId}
                             />
                         </Col>
                     </Row>
+
                     <Row className="mt-5">
                         <Col className="justify-content-end gap-3 d-flex">
                             <Button variant="secondary">
@@ -122,7 +131,6 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                                     Voltar
                                 </Link>
                             </Button>
-
                             <Button
                                 disabled={!selectedGroupId || !hasChanges}
                                 variant="success"
@@ -136,15 +144,15 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                 </Container>
             </main>
             {message && (
-                <Alerta
-                    mensagem={message.text}
-                    variacao={message.type}
-                    duracao={7000}
-                />
-            )}
+                            <Alerta
+                                mensagem={message.text}
+                                variacao={message.type}
+                                duracao={7000}
+                            />
+                        )}
             <Footer
-                telefone="(51) 3333-1234"
-                endereco="Rua Alberto Hoffmann, 285"
+                telefone={'(51) 3333-1234'}
+                endereco={'Rua Alberto Hoffmann, 285'}
                 ano={2026}
                 campus={campus}
             />

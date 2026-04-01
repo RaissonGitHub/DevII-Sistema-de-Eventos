@@ -31,3 +31,22 @@ export const atualizarPermissoes = async (id, idPerms) => {
     );
     return response.data;
 };
+
+export const atualizarUsuarios = async (id, idUsers) => {
+    if (!id) return null;
+    const csrfData = await pegarTokenCsrf();
+    const csrfToken = csrfData?.csrfToken || '';
+    const response = await axios.patch(
+        `http://localhost:8000/api/grupos/${id}/`,
+        {
+            user_id: idUsers,
+        },
+        {
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            withCredentials: true,
+        },
+    );
+    return response.data;
+};
