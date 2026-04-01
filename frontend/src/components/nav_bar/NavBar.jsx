@@ -2,7 +2,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import IFLogo from '../common/IFLogo';
-
 export default function NavBar() {
     return (
         <Navbar style={{ backgroundColor: '#00A44B' }}>
@@ -26,6 +25,9 @@ export default function NavBar() {
                         </Nav.Link>
                          <Nav.Link href="permissoesGrupos" className="text-white">
                             Permissões mock
+                        </Nav.Link>
+                        <Nav.Link href="adicionarLocal" className="text-white">
+                            Adicionar Local
                         </Nav.Link>
                         {/*<Nav.Link href="#link" className="text-white">
                             Avaliações

@@ -7,7 +7,6 @@ app_name = 'api'
 
 urlpatterns = [
     # paths relacionados a local
-    path("locals/", LocalListView.as_view()),
-    path("locals/<int:pk>/", LocalDetailView.as_view()),
-
+    path("locais/", LocalListView.as_view()),
+    path("locais/<int:pk>/", LocalDetailView.as_view()),
 ]
