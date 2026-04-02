@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import LocalCard from '../components/common/LocalCard';
+import Button from 'react-bootstrap/esm/Button';
 import { MdArrowBack, MdCheckCircle } from 'react-icons/md';
 
 export default function AdicionarLocal({ campus = 'Campus Restinga' }) {
@@ -11,31 +12,46 @@ export default function AdicionarLocal({ campus = 'Campus Restinga' }) {
         <>
             <NavBar />
             <main className="flex-fill">
-                <Container fluid>
-                    <Row>
-                        <Col
-                            xs={12}
-                            md={10}
-                            lg={8}
-                            className="mx-auto d-flex flex-column align-items-center my-5 gap-3"
-                        >
+                <Container className="mx-auto">
+                    <Row className="mx-auto my-5 d-flex justify-content-center">
+                        <Col className="">
                             {<LocalCard />}
+                            <Row className="my-3">
+                                <Col className="d-flex justify-content-end gap-3">
+                                    <Button
+                                        size="lg"
+                                        variant="secondary"
+                                        className="fw-bold"
+                                    >
+                                        <MdArrowBack
+                                            size={20}
+                                            className="me-2"
+                                        />
+                                        Voltar
+                                    </Button>
+                                    <Button
+                                        size="lg"
+                                        variant="success"
+                                        className="fw-bold"
+                                        style={{
+                                            backgroundColor: '#00A44B',
+                                            border: 'none',
+                                        }}
+                                    >
+                                        <MdCheckCircle
+                                            size={20}
+                                            className="me-2"
+                                        />
+                                        Criar Local
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                     {/*Botoes de ação*/}
-                    <Row className="mb-4">
-                        <Col className="d-flex justify-content-end">
-                            <button className="btn" style={{ backgroundColor: '#6b6d6c', color: 'white' }}>
-                                <MdArrowBack size={20} className="me-2" />
-                                Voltar
-                            </button>
-                            <button className="btn" style={{ backgroundColor: '#00A44B', color: 'white' }}>
-                                <MdCheckCircle size={20} className="me-2" />
-                                Criar Local
-                            </button>
-                        </Col>
+                    <Row className="mb-4 mx-auto d-flex">
+                        <Col></Col>
                     </Row>
-
                 </Container>
             </main>
             {/* Mude esses dados posteriormente */}
