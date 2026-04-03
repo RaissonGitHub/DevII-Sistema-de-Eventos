@@ -6,16 +6,16 @@ from ..serializers import LocalSerializer
 
 from rest_framework.permissions import AllowAny
 
+
 class LocalListView(APIView):
     queryset = Local.objects.all()
     serializer_class = LocalSerializer
-    permission_classes = [AllowAny]         #modificar! permissão para admin
+    permission_classes = [AllowAny]  # modificar! permissão para admin
 
     def get(self, request, *args, **kwargs):
         locals = Local.objects.all()
         serializer = LocalSerializer(locals, many=True)
         return Response(serializer.data)
-
 
     def post(self, request):
         dados = request.data
@@ -27,8 +27,8 @@ class LocalListView(APIView):
 
 
 class LocalDetailView(APIView):
-    #nível de objetos: local específico
-    permission_classes = [AllowAny]     #modificar! permissão para admin
+    # nível de objetos: local específico
+    permission_classes = [AllowAny]  # modificar! permissão para admin
 
     def get_object(self, pk):
         # função "básica" para pegar o local específico, caso exista. Se não existir, retorna None

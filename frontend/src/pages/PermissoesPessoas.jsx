@@ -10,30 +10,31 @@ import Select from '../components/common/Select';
 import { useState } from 'react';
 
 import { useCsrf } from '../hooks/useCsrf';
-import { useGrupos } from '../hooks/useGrupos';
+import { usePermissoes } from '../hooks/usePermissoes';
 import { useUsers } from '../hooks/useUsers';
-import { useUsersGrupos } from '../hooks/useUsersGrupos';
+import { useUsersPermissoes } from '../hooks/useUsersPermissoes';
 import Vinculo from '../components/common/Vinculo';
 
 export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
     const { csrfToken } = useCsrf();
-    const { grupos } = useGrupos();
+    const { perms } = usePermissoes();
     const { users } = useUsers();
 
     const {
-        selectedGroupId,
-        setSelectedGroupId,
-        usersDoGrupo,
-        usersNaoDoGrupo,
+        selectedUserId,
+        setSelectedUserId,
+        selectedUser,
+        permsDoUser,
+        permsNaoDoUser,
         loading,
         message,
         setMessage,
-        handleAddUser,
-        handleRemoveUser,
+        handleAddPermission,
+        handleRemovePermission,
         handleSave,
         handleReset,
         hasChanges,
-    } = useUsersGrupos(users);
+    } = useUsersPermissoes(perms);
 
     const [search, setSearch] = useState('');
 
@@ -45,7 +46,7 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                     <Row>
                         <Col className="text-center my-5">
                             <h1 className="fw-bold text-success">
-                                Painel dos Grupos - Pessoas
+                                Painel de Pessoas - PermsObjs
                             </h1>
                         </Col>
                     </Row>
@@ -53,7 +54,7 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                         <Col className="d-flex">
                             <div className="w-25">
                                 <h3 className="text-success fw-bold fs-5">
-                                    Grupo
+                                    Pessoa
                                 </h3>
                             </div>
                         </Col>
@@ -63,70 +64,51 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                             <div className="d-flex align-items-start justify-content-start">
                                 <Select
                                     className="w-50"
-                                    grupos={grupos}
-                                    value={selectedGroupId}
+                                    grupos={users}
+                                    value={selectedUserId}
                                     onChange={(event) =>
-                                        setSelectedGroupId(event.target.value)
+                                        setSelectedUserId(event.target.value)
                                     }
-                                    textFundo='Selecione o grupo'
+                                    textFundo='Selecione a pessoa'
                                 />
-                                <Button
-                                    className="ms-4 h-50"
-                                    variant="success"
-                                    style={{ background: '#006B3F' }}
-                                >
-                                    <Link to={'/permissoesGrupos'} className="text-white fw-bold text-decoration-none">
-                                        Atribuir Permissões
-                                    </Link>
-                                </Button>
-                                <Button
-                                    className="ms-4 h-50"
-                                    variant="success"
-                                    style={{ background: '#006B3F' }}
-                                >
-                                    <Link to={'/permissoesPessoas'} className="text-white fw-bold text-decoration-none">
-                                        PermsObj
-                                    </Link>
-                                </Button>
                             </div>
                         </Col>
                     </Row>
                     <Row className="mt-3">
                         <Col>
                             <span className="fs-5 fw-semibold">
-                                Buscar pessoas
+                                Buscar permissões
                             </span>
                             <input
                                 className="form-control"
                                 type="text"
-                                placeholder="Digite para filtrar pessoas"
+                                placeholder="Digite para filtrar permissões"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </Col>
                     </Row>
-
                     <Row className="mt-5">
                         <Col>
                             <Vinculo
-                                cabecario1="Pessoas"
-                                cabecario2="Grupo"
+                                cabecario1="Permissões disponíveis"
+                                cabecario2="Permissões do usuário"
                                 corTexto="#fff"
                                 corCabecario="#006B3F"
-                                dados1={usersNaoDoGrupo.filter((u) =>
-                                    `${u.username}`
+                                dados1={permsNaoDoUser.filter((p) =>
+                                    p.name
                                         .toLowerCase()
-                                        .includes(search.trim().toLowerCase())
+                                        .includes(search.trim().toLowerCase()),
                                 )}
-                                dados2={usersDoGrupo.filter((u) =>
-                                    `${u.username}`
-                                        .toLowerCase()
-                                        .includes(search.trim().toLowerCase())
+                                dados2={permsDoUser.filter((p) =>
+                                    p.name
+                                    .toLowerCase()
+                                    .includes(search.trim().toLowerCase()),
                                 )}
-                                onAcao1={handleRemoveUser}
-                                onAcao2={handleAddUser}
+                                onAcao1={handleRemovePermission}
+                                onAcao2={handleAddPermission}
                                 save={handleSave}
-                                selecionado={selectedGroupId}
+                                selecionado={selectedUserId}
                             />
                         </Col>
                     </Row>
@@ -135,14 +117,14 @@ export default function PessoasGrupos({ campus = 'Campus Restinga' }) {
                         <Col className="justify-content-end gap-3 d-flex">
                             <Button variant="secondary">
                                 <Link
-                                    to={'/'}
+                                    to={'/usuarioGrupos'}
                                     className="text-white text-decoration-none fw-bold"
                                 >
                                     Voltar
                                 </Link>
                             </Button>
                             <Button
-                                disabled={!selectedGroupId || !hasChanges}
+                                disabled={!selectedUserId || !hasChanges}
                                 variant="success"
                                 className="fw-bold"
                                 onClick={handleSave}
