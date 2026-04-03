@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import PermissoesGroups from './pages/PermissoesGrupos';
 import PessoasGrupos from './pages/PessoasGrupos';
+import PermissoesPessoas from './pages/PermissoesPessoas';
 import AdicionarLocal from './pages/AdicionarLocal';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/permissoesGrupos" element={<PermissoesGroups />} />
                 <Route path="/usuarioGrupos" element={<PessoasGrupos />} />
+                <Route path="/permissoesPessoas" element={<PermissoesPessoas />} />
 
                 <Route path="/adicionarLocal" element={<AdicionarLocal />} />
             </Routes>

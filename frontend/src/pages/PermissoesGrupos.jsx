@@ -67,6 +67,7 @@ export default function PermissoesGrupos({ campus = 'Campus Restinga' }) {
                                     onChange={(event) =>
                                         setSelectedGroupId(event.target.value)
                                     }
+                                    textFundo='Selecione o grupo'
                                 />
                                 <Button className='ms-4 h-50' variant="success" style={{background:'#006B3F', }} >
                                     <Link to={'/usuarioGrupos'} className='text-white fw-bold text-decoration-none'>Atribuir Pessoas</Link>
@@ -116,7 +117,7 @@ export default function PermissoesGrupos({ campus = 'Campus Restinga' }) {
                         <Col className="justify-content-end gap-3 d-flex">
                             <Button variant="secondary">
                                 <Link
-                                    to={''}
+                                    to={'/'}
                                     className="text-white text-decoration-none fw-bold"
                                 >
                                     Voltar
