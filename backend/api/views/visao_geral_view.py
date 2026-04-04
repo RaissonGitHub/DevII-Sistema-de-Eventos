@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
-from .models import Evento, Atracao, AvaliacaoSubmissao, Usuario
+#from .models import Evento, Atracao, AvaliacaoSubmissao, Usuario
 
 class DashboardView(View):
     def get(self, request):
