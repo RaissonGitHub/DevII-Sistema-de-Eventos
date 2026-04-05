@@ -8,10 +8,10 @@ import PermissoesPessoas from './pages/PermissoesPessoas';
 import LocaisEspacosListar from './pages/LocaisEspacosListar';
 import LocalForm from './pages/LocalForm';
 import LocaisListar from './pages/LocaisListar';
-
 import Dashboard from './pages/Dashboard';
 import CadastroComplementar from './pages/CadastroComplementar';
 import AdicionarEvento from './pages/AdicionarEvento';
+import ListarEnvento from './pages/ListarEvento'
 
 
 function App() {
@@ -44,9 +44,10 @@ function App() {
                     element={<PermissoesPessoas />}
                 />
 
-                <Route path="/adicionarEvento" element={<AdicionarEvento />} />
+                
                 <Route path="/permissoesPessoas" element={<PermissoesPessoas />} />
                 <Route path="/adicionarEvento" element={<AdicionarEvento/>}/>
+                <Route path="/ListarEventos" element={<ListarEnvento />} />
                 <Route path="/listarLocais" element={<LocaisListar />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route

@@ -7,7 +7,6 @@ from .views.choices_evento_view import OpcoesFormularioView
 from .views.perms_view import PermissaoListView
 from .views.groups_view import GrupoListView, GrupoPermissoesView
 from .views.local_views import LocalDetailView, LocalListView
-from .views.perms_view import PermissaoListView
 from .views.user_view import UserListView, UserPermissoesView
 from .views.visao_geral_view import DashboardView
 
