@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { pegarTokenCsrf } from './csrfService';
 
-const API_URL = 'http://localhost:8001/api/eventos/';
+const API_URL = 'http://localhost:8000/api/eventos/';
 
 export const listarEventos = async () => {
     const response = await axios.get(API_URL);
@@ -19,6 +19,6 @@ export const criarEvento = async (dados) => {
 };
 
 export const buscarOpcoesFormulario = async () => {
-    const response = await axios.get('http://localhost:8001/api/eventos/opcoes/');
+    const response = await axios.get('http://localhost:8000/api/eventos/opcoes/');
     return response.data;
 };
