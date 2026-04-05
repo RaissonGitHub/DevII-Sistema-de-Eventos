@@ -29,6 +29,7 @@ export default function NavBar() {
                         <Nav.Link href="listarLocaisEspacos" className="text-white">
                             Listar Locais e Espaços
                         </Nav.Link>
+                        <Nav.Link href="AdicionarEvento" className="text-white">Adicionar Evento</Nav.Link>
                         {/*<Nav.Link href="#link" className="text-white">
                             Avaliações
                         </Nav.Link>
