@@ -7,24 +7,52 @@ import Footer from '../components/footer/Footer';
 import Card from '../components/common/Card';
 import { listarEventos } from '../services/eventoService';
 
+
 export default function EventosListar() {
     const [eventos, setEventos] = useState([]);
     const [carregando, setCarregando] = useState(true);
+    const [mensagem, setMensagem] = useState(""); // ✅ TASK 78
     const navigate = useNavigate();
 
     useEffect(() => {
-        const carregarEventos = async () => {
-            try {
-                const dados = await listarEventos();
-                setEventos(dados);
-            } catch (error) {
-                console.error('Erro ao buscar eventos:', error);
-            } finally {
-                setCarregando(false);
-            }
-        };
         carregarEventos();
     }, []);
+
+    const carregarEventos = async () => {
+        try {
+            const dados = await listarEventos();
+            setEventos(dados);
+        } catch (error) {
+            console.error('Erro ao buscar eventos:', error);
+        } finally {
+            setCarregando(false);
+        }
+    };
+
+    const deletarEvento = async (id) => {
+        if (!window.confirm("Tem certeza que deseja excluir este evento?")) return;
+
+        try {
+            const response = await fetch(`${API_URL}/eventos/${id}/`, {
+                method: "DELETE",
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMensagem(data.msg);
+
+                // remove da lista sem recarregar
+                setEventos(prev => prev.filter(e => e.id !== id));
+            } else {
+                setMensagem(data.erro || "Erro ao excluir evento");
+            }
+
+        } catch (error) {
+            console.error(error);
+            setMensagem("Erro na requisição");
+        }
+    };
 
     return (
         <div className="d-flex flex-column min-vh-100 bg-light">
@@ -34,7 +62,8 @@ export default function EventosListar() {
                 <Container>
                     <Card corBorda="#00A44B">
                         <Container fluid className="mb-5 px-4">
-                            {/* Título da Página */}
+
+                            {/* Título */}
                             <Row className="pt-5 pb-2">
                                 <Col className="d-flex align-items-center">
                                     <MdEvent color="#00A44B" size={35} />
@@ -43,9 +72,16 @@ export default function EventosListar() {
                                     </h3>
                                 </Col>
                             </Row>
+
                             <hr className="mb-4" />
 
-                            {/* Estado de Carregamento */}
+                            {mensagem && (
+                                <div className="alert alert-success text-center">
+                                    {mensagem}
+                                </div>
+                            )}
+
+                            {/* Loading */}
                             {carregando ? (
                                 <div className="text-center py-5">
                                     <Spinner animation="border" variant="success" />
@@ -60,39 +96,56 @@ export default function EventosListar() {
                                                 className="d-flex justify-content-between align-items-center mb-3 border rounded shadow-sm p-3"
                                                 style={{ borderLeft: '5px solid #00A44B' }}
                                             >
+                                                {/* INFO */}
                                                 <div className="d-flex flex-column">
                                                     <div className="fs-5 fw-bold text-dark mb-1">
                                                         {evento.nome}
                                                     </div>
+
                                                     <div className="d-flex flex-wrap gap-3 text-muted small">
                                                         <span className="d-flex align-items-center gap-1">
                                                             <MdInfoOutline /> <strong>Tema:</strong> {evento.tema}
                                                         </span>
+
                                                         <span className="d-flex align-items-center gap-1">
                                                             <MdAccessTime /> <strong>Carga:</strong> {evento.carga_horaria}h
                                                         </span>
+
                                                         <span className="d-flex align-items-center gap-1">
                                                             <MdBusiness /> <strong>Setor:</strong> {evento.setor}
                                                         </span>
                                                     </div>
                                                 </div>
-                                                
-                                                <div className="text-end">
+
+                                                {/* AÇÕES */}
+                                                <div className="text-end d-flex flex-column gap-2">
+
                                                     <Badge pill bg="success" className="px-3 py-2">
                                                         {evento.status_evento?.toUpperCase() || 'N/A'}
                                                     </Badge>
+
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => deletarEvento(evento.id)}
+                                                    >
+                                                        Excluir
+                                                    </Button>
+
                                                 </div>
                                             </ListGroup.Item>
                                         ))
                                     ) : (
                                         <div className="text-center py-5 border rounded bg-white">
-                                            <p className="text-muted mb-0">Nenhum evento cadastrado até o momento.</p>
+                                            <p className="text-muted mb-0">
+                                                Nenhum evento cadastrado até o momento.
+                                            </p>
                                         </div>
                                     )}
                                 </ListGroup>
                             )}
 
-                            {/* Botão de Ação Principal */}
+                            {/* Botão Novo Evento */}
                             <div className="mt-4">
                                 <Button
                                     as={Link}
@@ -104,23 +157,30 @@ export default function EventosListar() {
                                     <MdAddCircle size={20} /> Novo Evento
                                 </Button>
                             </div>
+
                         </Container>
                     </Card>
 
-                    {/* Botão Voltar */}
+                    {/* Voltar */}
                     <div className="d-flex justify-content-end mt-4">
                         <Button
-                            onClick={() => navigate(-1)} 
+                            onClick={() => navigate(-1)}
                             variant="outline-secondary"
                             className="d-flex align-items-center gap-2 px-4 py-2"
                         >
                             <MdArrowBack /> Voltar
                         </Button>
                     </div>
+
                 </Container>
             </main>
 
-            <Footer telefone="(51) 3333-1234" endereco="Rua Alberto Hoffmann, 285" ano={2026} campus="Campus Restinga" />
+            <Footer
+                telefone="(51) 3333-1234"
+                endereco="Rua Alberto Hoffmann, 285"
+                ano={2026}
+                campus="Campus Restinga"
+            />
         </div>
     );
 }
