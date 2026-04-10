@@ -11,6 +11,7 @@ from .views.criterio_avaliacao_view import (
     CriterioAvaliacaoDetailView,
     CriterioAvaliacaoListView,
 )
+from .views.espaco_view import EspacoDetailView, EspacoListView
 from .views.evento_view import (
     EventoDeleteView,
     EventoDetailView,
@@ -34,6 +35,8 @@ urlpatterns = [
     path("eventos/", EventoListView.as_view()),
     path("eventos/opcoes/",OpcoesFormularioView.as_view()),
     path("locais/<int:pk>/", LocalDetailView.as_view()),
+    path("espacos/", EspacoListView.as_view()),
+    path("espacos/<int:pk>/", EspacoDetailView.as_view()),
     # paths para usuários (vai ter mudar td sobre usuários dps)
     path("users/", UserListView.as_view()),
     path("users/<int:pk>/", UserPermissoesView.as_view()),

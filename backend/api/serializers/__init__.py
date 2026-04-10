@@ -1,6 +1,7 @@
 # ruff: noqa: F403
 from .campo_formulario_serializer import *
 from .criterio_avaliacao_serializer import *
+from .espaco_serializer import *
 from .evento_serializer import *
 from .groups_serializer import *
 from .local_serializer import *
