@@ -6,6 +6,7 @@ from .models import (
     CampoFormulario,
     CriterioAvaliacao,
     Resposta,
+    Espaco
 )
 
 admin.site.register(Evento)
@@ -14,5 +15,6 @@ admin.site.register(Modalidade)
 admin.site.register(CampoFormulario)
 admin.site.register(CriterioAvaliacao)
 admin.site.register(Resposta)
+admin.site.register(Espaco)
 
 # Register your models here.

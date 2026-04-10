@@ -6,3 +6,4 @@ from .modalidade import *
 from .campo_formulario import *
 from .criterio_avaliacao import *
 from .resposta import *
+from .espaco import *
