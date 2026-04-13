@@ -12,6 +12,8 @@ import Dashboard from './pages/Dashboard';
 import CadastroComplementar from './pages/CadastroComplementar';
 import AdicionarEvento from './pages/AdicionarEvento';
 import ListarEnvento from './pages/ListarEvento';
+import Teste from './pages/Teste';
+import AdicionarModalidade from './pages/AdicionarModalidade';
 
 function App() {
     return (
@@ -30,6 +32,8 @@ function App() {
                 <Route path="/listarLocais" element={<LocaisListar />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/cadastroComplementar"  element={<CadastroComplementar />} />
+                <Route path="/teste"  element={<Teste />} />
+                <Route path="/adicionarModalidade"  element={<AdicionarModalidade />} />
             </Routes>
         </div>
     );
