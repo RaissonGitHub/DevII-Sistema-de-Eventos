@@ -17,6 +17,7 @@ import ListarEnvento from './pages/ListarEvento';
 import SessionTokenCallback from './pages/SessionTokenCallback';
 import Teste from './pages/Teste';
 import ModalidadeFormulario from './pages/ModalidadeFormulario';
+import ModalidadesListar from './pages/ModalidadesListar';
 import DefinirCoordenadorEvento from './pages/DefinirCoordenadorEvento';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
                 <Route path="/session/token/" element={<SessionTokenCallback />} />
                 <Route path="/session/token/*" element={<SessionTokenCallback />} />
                 <Route path="/teste"  element={<Teste />} />
+                <Route path="/listarModalidades"  element={<ModalidadesListar />} />
                 <Route path="/adicionarModalidade"  element={<ModalidadeFormulario />} />
                 <Route path="/editarModalidade/:id"  element={<ModalidadeFormulario />} />
                 <Route path="/atribuirCoordenador"  element={<DefinirCoordenadorEvento />} />

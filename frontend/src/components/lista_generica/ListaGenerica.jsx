@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../common/Card';
 import { Container, Row, Col, ListGroup, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,7 +13,28 @@ export default function ListaGenerica({
     rotaAdicionar = '/',
     rotaEditarBase = '/',
     onDeletar,
+    textoAdicionar = 'Adicionar',
+    paginacao = 3,
 }) {
+    const [page, setPage] = useState(0);
+    const perPage = paginacao;
+    const itensLength = (itens || []).length;
+    const totalPages = Math.max(1, Math.ceil(itensLength / perPage));
+    const pageData = (itens || []).slice(
+        page * perPage,
+        page * perPage + perPage,
+    );
+
+    useEffect(() => {
+        const newTotal = Math.max(1, Math.ceil(itensLength / perPage));
+        if (page > newTotal - 1) {
+            const t = setTimeout(() => {
+                setPage(Math.max(0, newTotal - 1));
+            }, 0);
+            return () => clearTimeout(t);
+        }
+        return undefined;
+    }, [itensLength, perPage, page]);
     const navigate = useNavigate();
 
     return (
@@ -49,7 +70,7 @@ export default function ListaGenerica({
                 <Row className="mb-3 px-5">
                     <Col>
                         <ListGroup variant="flush">
-                            {itens?.map((item, index) => (
+                            {pageData?.map((item, index) => (
                                 <ListGroup.Item
                                     key={item.id}
                                     className="d-flex justify-content-between align-items-center mb-2 border rounded shadow-sm py-3"
@@ -57,7 +78,7 @@ export default function ListaGenerica({
                                 >
                                     <div className="fs-5 text-muted">
                                         <span className="me-2">
-                                            {index + 1}.
+                                            {page * perPage + index + 1}.
                                         </span>
                                         {item.nome}
                                     </div>
@@ -102,10 +123,57 @@ export default function ListaGenerica({
                             size="sm"
                             className="d-inline-flex align-items-center gap-1 mt-2 px-3 py-2 shadow-sm"
                         >
-                            <MdAddCircle size={18} /> Adicionar
+                            <MdAddCircle size={18} /> {textoAdicionar}
                         </Button>
                     </Col>
                 </Row>
+
+                {totalPages > 1 && (
+                    <Row className="mt-3">
+                        <Col className="d-flex justify-content-center align-items-center">
+                            <Button
+                                variant="success"
+                                size="sm"
+                                className="me-2"
+                                onClick={() =>
+                                    setPage((p) => Math.max(0, p - 1))
+                                }
+                                disabled={page === 0}
+                            >
+                                Anterior
+                            </Button>
+
+                            {[...Array(totalPages)].map((_, p) => (
+                                <Button
+                                    key={p}
+                                    variant={
+                                        p === page
+                                            ? 'success'
+                                            : 'outline-success'
+                                    }
+                                    size="sm"
+                                    className="mx-1"
+                                    onClick={() => setPage(p)}
+                                >
+                                    {p + 1}
+                                </Button>
+                            ))}
+                            <Button
+                                variant="success"
+                                size="sm"
+                                className="ms-2"
+                                onClick={() =>
+                                    setPage((p) =>
+                                        Math.min(totalPages - 1, p + 1),
+                                    )
+                                }
+                                disabled={page === totalPages - 1}
+                            >
+                                Próximo
+                            </Button>
+                        </Col>
+                    </Row>
+                )}
             </Container>
         </Card>
     );

@@ -97,9 +97,9 @@ export default function DashboardEvento({}) {
             to: '/adicionarEvento',
         },
         {
-            texto: 'Adicionar uma Nova Modalidade',
+            texto: 'Gerenciar Modalidades',
             icone: <IoMdSchool color="#00f" size={20} />,
-            to: '/adicionarModalidade',
+            to: '/listarModalidades',
         },
     ];
 

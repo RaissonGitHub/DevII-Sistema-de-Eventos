@@ -152,6 +152,9 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                 : 'Modalidade criada com sucesso.',
             'success',
         );
+        setTimeout(() => {
+            navigate('/listarModalidades');
+        }, 1000);
     }
 
     async function handleExcluirModalidade() {
