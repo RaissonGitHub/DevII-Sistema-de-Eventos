@@ -1,16 +1,19 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+
+# from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..models.espaco import Espaco
 from ..serializers import EspacoSerializer
 
+from .perms_generic_view import IsAdmin, PodeCriarEspaco, PodeAtribuirEspaco
+
 
 class EspacoListView(APIView):
     queryset = Espaco.objects.all()
     serializer_class = EspacoSerializer
-    permission_classes = [AllowAny]  # modificar! permissão para admin
+    permission_classes = [IsAdmin]  # modificado
 
     def get(self, request, *args, **kwargs):
         local_id = request.query_params.get("local")
@@ -36,7 +39,7 @@ class EspacoListView(APIView):
 
 class EspacoDetailView(APIView):
     # nível de objetos: espaco específico
-    permission_classes = [AllowAny]  # modificar! permissão para admin
+    permission_classes = [IsAdmin]  # modificado
 
     def get_object(self, pk):
         # função "básica" para pegar o espaco específico, caso exista. Se não existir, retorna None
@@ -58,6 +61,8 @@ class EspacoDetailView(APIView):
         if not espaco:
             return Response({"erro": "Espaço não encontrado"}, status=404)
 
+        self.check_object_permissions(request, espaco)
+
         serializer = EspacoSerializer(espaco, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -71,6 +76,8 @@ class EspacoDetailView(APIView):
 
         if not espaco:
             return Response({"erro": "Espaço não encontrado"}, status=404)
+
+        self.check_object_permissions(request, espaco)
 
         espaco.ativo = False
         espaco.save()

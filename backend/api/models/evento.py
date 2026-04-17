@@ -10,6 +10,7 @@ from .base import Base
 from .modalidade import Modalidade
 from django.core.exceptions import ValidationError
 
+
 class Evento(Base):
     nome = models.CharField(
         max_length=100,
@@ -27,7 +28,7 @@ class Evento(Base):
         verbose_name="status do evento",
         help_text="informe o status do evento",
         max_length=20,
-        default=StatusEvento.EM_PLANEJAMENTO
+        default=StatusEvento.EM_PLANEJAMENTO,
     )
     carga_horaria = models.PositiveIntegerField(
         verbose_name="carga horária",
@@ -49,8 +50,9 @@ class Evento(Base):
     # futuramente, fazer relacionamento com local
     class Meta:
         permissions = [
-            ("coordenar_evento", "pode coordenar este evento"),
-            ("disabilitar_evento", "pode desativar este evento"),
+            ("coordenar_evento", "Pode coordenar este evento"),
+            ("disabilitar_evento", "Pode desativar este evento"),
+            ("organiza_evento", "Pode organizar este evento"),
         ]
 
     modalidades = models.ManyToManyField(
@@ -61,30 +63,22 @@ class Evento(Base):
 
     def __str__(self):
         return f"{self.nome}"
-    
 
     def clean(self):
         errors = {}
 
         if self.nome == "" or not self.nome.strip():
-            errors['nome'] = 'O nome do evento não pode estar em branco.'
+            errors["nome"] = "O nome do evento não pode estar em branco."
         elif self.descricao == "" or not self.descricao.strip():
-            errors['descricao'] = 'O evento deve ter uma descrição.'
+            errors["descricao"] = "O evento deve ter uma descrição."
         elif self.carga_horaria == 0 or self.carga_horaria < 0:
-            errors['carga_horaria'] = 'Carga horária inválida'
+            errors["carga_horaria"] = "Carga horária inválida"
         elif self.tema == "" or not self.tema.strip():
-            errors['tema'] = 'O tema do evento não pode estar em branco'
+            errors["tema"] = "O tema do evento não pode estar em branco"
         elif self.setor == "" or not self.setor.strip():
-            errors['setor'] = 'Este campo não pode estar em branco'
+            errors["setor"] = "Este campo não pode estar em branco"
         elif self.status_evento == "" or not self.status_evento.strip():
-            errors['status_evento'] = 'Este campo não pode estar em branco'
-       
+            errors["status_evento"] = "Este campo não pode estar em branco"
+
         if errors:
             raise ValidationError(errors)
-        
-            
-
-
-    
-
-    

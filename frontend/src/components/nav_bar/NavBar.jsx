@@ -24,12 +24,12 @@ export default function NavBar() {
                         <Nav.Link href="/" className="text-white">
                             Home
                         </Nav.Link>
-                        <Nav.Link
+                        {/* <Nav.Link
                             href="permissoesGrupos"
                             className="text-white"
                         >
                             Permissões mock
-                        </Nav.Link>
+                        </Nav.Link> */}
                         <Nav.Link
                             href="listarLocaisEspacos"
                             className="text-white"

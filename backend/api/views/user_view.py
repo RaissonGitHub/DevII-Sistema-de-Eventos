@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import AllowAny
+# from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from api.serializers.users_serializer import (
     UserSerializer,
@@ -8,6 +8,8 @@ from api.serializers.users_serializer import (
     UserPermissoesSerializer,
     UserPermissoesUpdateSerializer,
 )
+from .perms_generic_view import IsAdmin
+
 
 User = get_user_model()
 
@@ -15,13 +17,13 @@ User = get_user_model()
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin]
 
 
 class UserGruposView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.prefetch_related("groups")
     serializer_class = UserGrupoUpdateSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin]
 
     def get_serializer_class(self):
         if self.request.method in ["PUT", "PATCH"]:
@@ -33,7 +35,7 @@ class UserPermissoesView(generics.RetrieveUpdateAPIView):
     # tem q por na cabeça q as permissões de usuário são "user_permissions", n "permissions" só
     queryset = User.objects.prefetch_related("user_permissions")
     serializer_class = UserPermissoesUpdateSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdmin]
 
     def get_serializer_class(self):
         if self.request.method in ["PUT", "PATCH"]:

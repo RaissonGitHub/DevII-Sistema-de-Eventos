@@ -41,6 +41,7 @@ class IsGroupAndObjectPerm(BasePermission):
         return any(user.has_perm(perm, obj) for perm in self.required_object_perms)
 
 
+# PERMS DE EVENTO
 class PodeCoordenarEvento(IsGroupAndObjectPerm):
     required_groups = ["Coordenador"]
     required_object_perm = ["api.coordenar_evento"]
@@ -51,6 +52,34 @@ class PodeOrganizarEvento(IsGroupAndObjectPerm):
     required_object_perm = ["api.organizar_evento", "api.coordenar_evento"]
 
 
+# PERM MÁXIMA DO ADMIN
 class IsAdmin(IsGroupAndObjectPerm):
     required_groups = ["Administrador"]
     required_object_perm = []
+
+
+# PERMS DE LOCAL
+class PodeVerLocal(IsGroupAndObjectPerm):
+    required_groups = ["Administrador, Coordenador"]
+    required_object_perm = ["api.ver_local"]
+
+
+class PodeAtribuirLocal(IsGroupAndObjectPerm):
+    required_groups = ["Administrador", "Coordenador"]
+    required_object_perm = ["api.atribuir_local"]
+
+
+# PERMS DE ESPAÇO
+class PodeVerEspaco(IsGroupAndObjectPerm):
+    required_groups = ["Administrador, Coordenador, Organizador"]
+    required_object_perm = ["api.ver_espaco"]
+
+
+class PodeAtribuirEspaco(IsGroupAndObjectPerm):
+    required_groups = ["Administrador", "Coordenador", "Organizador"]
+    required_object_perm = ["api.atribuir_espaco"]
+
+
+class PodeCriarEspaco(IsGroupAndObjectPerm):
+    required_groups = ["Administrador", "Coordenador"]
+    required_object_perm = ["api.criar_espaco"]
