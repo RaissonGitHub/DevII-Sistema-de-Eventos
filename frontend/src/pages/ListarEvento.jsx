@@ -9,6 +9,8 @@ import {
     Spinner,
 } from 'react-bootstrap';
 import {
+    MdEdit,
+    MdDelete,
     MdEvent,
     MdAddCircle,
     MdArrowBack,
@@ -20,14 +22,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../components/nav_bar/NavBar';
 import Footer from '../components/footer/Footer';
 import Card from '../components/common/Card';
-import { listarEventos } from '../services/eventoService';
+import { listarEventos,deletarEvento } from '../services/eventoService';
 import { API_URL } from '../config';
 import eArray from '../utils/eArray';
+import Alerta from '../components/common/Alerta'
 
 export default function EventosListar() {
     const [eventos, setEventos] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [mensagem, setMensagem] = useState(''); // ✅ TASK 78
+    const [alerta,setAlerta] = useState('')
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,28 +49,21 @@ export default function EventosListar() {
         }
     };
 
-    const deletarEvento = async (id) => {
+    const excluirEvento = async (id) => {
         if (!window.confirm('Tem certeza que deseja excluir este evento?'))
             return;
 
         try {
-            const response = await fetch(`${API_URL}/eventos/${id}/`, {
-                method: 'DELETE',
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setMensagem(data.msg);
-
-                // remove da lista sem recarregar
-                setEventos((prev) => prev.filter((e) => e.id !== id));
-            } else {
-                setMensagem(data.erro || 'Erro ao excluir evento');
-            }
+            const data = await deletarEvento(id)
+            setAlerta('success');
+            setMensagem(data.msg);
+            setEventos((prev) => prev.filter((e) => e.id !== id));
+        
         } catch (error) {
-            console.error(error);
-            setMensagem('Erro na requisição');
+            console.error("Erro na exclusão:", error);
+            setAlerta('danger')
+            const erroMsg = error.response?.data?.erro || 'Erro ao processar a exclusão';
+            setMensagem(erroMsg);
         }
     };
 
@@ -92,12 +89,6 @@ export default function EventosListar() {
                             </Row>
 
                             <hr className="mb-4" />
-
-                            {mensagem && (
-                                <div className="alert alert-success text-center">
-                                    {mensagem}
-                                </div>
-                            )}
 
                             {/* Loading */}
                             {carregando ? (
@@ -140,7 +131,7 @@ export default function EventosListar() {
                                                         <span className="d-flex align-items-center gap-1">
                                                             <MdAccessTime />{' '}
                                                             <strong>
-                                                                Carga:
+                                                                Carga Horária:
                                                             </strong>{' '}
                                                             {
                                                                 evento.carga_horaria
@@ -185,12 +176,12 @@ export default function EventosListar() {
                                                         variant="danger"
                                                         size="sm"
                                                         onClick={() =>
-                                                            deletarEvento(
+                                                            excluirEvento(
                                                                 evento.id,
                                                             )
                                                         }
                                                     >
-                                                        Excluir
+                                                        <MdDelete size={22}/>
                                                     </Button>
                                                 </div>
                                             </ListGroup.Item>
@@ -233,7 +224,17 @@ export default function EventosListar() {
                         >
                             <MdArrowBack /> Voltar
                         </Button>
+                        
                     </div>
+                    {mensagem &&(
+                        <div>
+                            <Alerta
+                                mensagem={mensagem}
+                                variacao={alerta}
+                                duracao={5000}
+                            />
+                        </div>
+                    )}
                 </Container>
             </main>
 

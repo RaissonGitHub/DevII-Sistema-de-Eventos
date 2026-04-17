@@ -11,9 +11,23 @@ export const criarEvento = async (dados) => {
     const csrfData = await pegarTokenCsrf();
     const csrfToken = csrfData?.csrfToken || '';
 
-    const response = await axios.post(API_URL, dados, {
+    const response = await axios.post(`${API_URL}/api/eventos/`, dados, {
         headers: { 'X-CSRFToken': csrfToken },
     });
+    return response.data;
+};
+
+export const deletarEvento = async (id) => {
+    const csrfData = await pegarTokenCsrf();
+    const csrfToken = csrfData?.csrfToken || '';
+
+    const response = await axios.delete(`${API_URL}/api/eventos/${id}/delete/`, {
+        headers: { 
+            'X-CSRFToken': csrfToken 
+        },
+        withCredentials: true,
+    });
+
     return response.data;
 };
 

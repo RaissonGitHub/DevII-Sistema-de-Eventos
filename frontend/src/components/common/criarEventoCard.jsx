@@ -10,6 +10,8 @@ import {
 import SecaoFormulario from './secaoFormulario';
 import { BsTrash } from 'react-icons/bs';
 import eArray from '../../utils/eArray';
+import Alerta from '../common/Alerta'
+
 
 export default function AdicionarEvento({
     nome,
@@ -24,7 +26,11 @@ export default function AdicionarEvento({
     setSetor,
     carga_horaria,
     setCargaHoraria,
+    errors,
+    setErrors,
     opcoes,
+    exibirSucesso,
+    navigate,
     handleSalvar,
 }) {
     return (
@@ -51,8 +57,12 @@ export default function AdicionarEvento({
                                             setNome(nome.target.value);
                                         }}
                                         type="text"
+                                        isInvalid={!!errors?.nome}
                                         style={{ backgroundColor: '#eeeeee' }}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                    {errors?.nome}
+                                </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
@@ -65,10 +75,15 @@ export default function AdicionarEvento({
                                         type="text"
                                         style={{ backgroundColor: '#eeeeee' }}
                                         value={tema}
+                                        
                                         onChange={(tema) => {
                                             setTema(tema.target.value);
                                         }}
+                                        isInvalid={!!errors?.tema}
                                     />
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors?.tema}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -87,12 +102,13 @@ export default function AdicionarEvento({
                                             backgroundColor: '#eeeeee',
                                             border: 'none',
                                         }}
+                                        isInvalid={!!errors?.setor}
                                     >
                                         <option value="">
                                             Selecione o setor
                                         </option>
                                         {/* Mapeia a lista de setores */}
-                                        {eArray(opcoes) &&
+                                        {
                                             opcoes.setores.map((opt) => (
                                                 <option
                                                     key={opt.value}
@@ -102,7 +118,11 @@ export default function AdicionarEvento({
                                                 </option>
                                             ))}
                                     </Form.Select>
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors?.setor}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
+
                             </Col>
                         </Row>
                         <br />
@@ -120,50 +140,20 @@ export default function AdicionarEvento({
                                         onChange={(e) =>
                                             setDescricao(e.target.value)
                                         }
+                                        isInvalid={!!errors?.descricao}
                                         style={{
                                             backgroundColor: '#eeeeee',
                                             border: 'none',
                                             padding: '10px',
                                         }}
                                     />
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors?.descricao}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <br />
-
-                        <Row>
-                            <Col md={6}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label className="fw-bold">
-                                        Status do Evento
-                                    </Form.Label>
-                                    <Form.Select
-                                        value={status}
-                                        onChange={(e) =>
-                                            setStatus(e.target.value)
-                                        }
-                                        style={{
-                                            backgroundColor: '#eeeeee',
-                                            border: 'none',
-                                        }}
-                                    >
-                                        <option value="">
-                                            Selecione o status
-                                        </option>
-                                        {/* Mapeia a lista de status */}
-                                        {eArray(opcoes) &&
-                                            opcoes.status.map((opt) => (
-                                                <option
-                                                    key={opt.value}
-                                                    value={opt.value}
-                                                >
-                                                    {opt.label}
-                                                </option>
-                                            ))}
-                                    </Form.Select>
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        
                         <br />
                         <Row>
                             <Col md={6}>
@@ -185,7 +175,11 @@ export default function AdicionarEvento({
                                             border: 'none',
                                             padding: '10px',
                                         }}
+                                        isInvalid={!!errors?.carga_horaria}
                                     />
+                                    <Form.Control.Feedback type='invalid'>
+                                        {errors?.carga_horaria}
+                                    </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -390,7 +384,7 @@ export default function AdicionarEvento({
 
                     {/* BOTÕES DE FINALIZAÇÃO */}
                     <div className="d-flex justify-content-end gap-3 mt-5 mb-5">
-                        <Button variant="secondary" className="px-4">
+                        <Button variant="secondary" className="px-4" onClick={()=>navigate("/ListarEventos")}>
                             Voltar
                         </Button>
                         <input
@@ -402,6 +396,10 @@ export default function AdicionarEvento({
                     </div>
                 </Form>
             </Container>
+            {exibirSucesso && (
+                            <Alerta mensagem="Evento criado com sucesso!" variacao="success" duracao={7000} />
+                        )}
+            
 
             {/* Rodapé verde aqui */}
         </div>

@@ -18,6 +18,9 @@ export default function CriarEvento() {
     const [setor, setSetor] = useState('');
     const [tema, setTema] = useState('');
     const [opcoes, setOpcoes] = useState({ status: [], setores: [] });
+    const [errors,setErrors] = useState({})
+    const [exibirSucesso, setExibirSucesso] = useState(false);
+
 
     useEffect(() => {
         const carregarDados = async () => {
@@ -28,7 +31,9 @@ export default function CriarEvento() {
     }, []);
 
     const handleSalvar = async () => {
-        if (
+        setErrors({});
+        setExibirSucesso(false)
+        {/*if (
             !nome ||
             !descricao ||
             !status ||
@@ -38,7 +43,7 @@ export default function CriarEvento() {
         ) {
             alert('Por favor, preenche todos os campos');
             return;
-        }
+        }*/}
 
         try {
             const novoEvento = {
@@ -50,17 +55,23 @@ export default function CriarEvento() {
                 tema,
             };
             await criarEvento(novoEvento);
-            alert('Evento criado com sucesso!');
-            navigate('/');
-            setNome('');
-            setDescricao('');
-            setCargaHoraria(0);
-            setStatus('');
-            setTema('');
-            setSetor('');
+            setExibirSucesso(true);
+            setTimeout(()=>{
+                navigate('/');
+                setNome('');
+                setDescricao('');
+                setCargaHoraria(0);
+                setStatus('');
+                setTema('');
+                setSetor('');
+            },3000);
+            
         } catch (erro) {
-            console.error('Erro ao criar Evento:', erro);
-            alert('Erro ao criar evento. Por favor, tente novamente.');
+           if (erro.response && erro.response.data) {
+            setErrors(erro.response.data);
+        } else {
+            alert('Erro inesperado. Por favor, tente novamente.');
+        }
         }
     };
 
@@ -85,8 +96,11 @@ export default function CriarEvento() {
                                     setTema={setTema} // Correção aqui
                                     carga_horaria={carga_horaria}
                                     setCargaHoraria={setCargaHoraria} // Correção aqui
+                                    errors={errors}
                                     opcoes={opcoes}
+                                    exibirSucesso={exibirSucesso}
                                     handleSalvar={handleSalvar}
+                                    navigate = {navigate}
                                 />
                             }
                         </Col>
