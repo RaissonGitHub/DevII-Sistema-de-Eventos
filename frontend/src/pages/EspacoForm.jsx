@@ -3,90 +3,50 @@ import Footer from '../components/footer/Footer';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
-import LocalCard from '../components/common/LocalCard';
+import EspacoCard from '../components/common/EspacoCard';
 import Button from 'react-bootstrap/esm/Button';
 import { MdArrowBack, MdCheckCircle } from 'react-icons/md';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import useLocais from '../hooks/useLocais';
+import useEspacos from '../hooks/useEspacos';
 import Alerta from '../components/common/Alerta';
 
-export default function LocalForm({ campus = 'Campus Restinga' }) {
-    const {
-        buscarLocal,
-        localSelecionado,
-        handleSave,
-        loading,
-        error,
-        message,
-    } = useLocais();
+export default function EspacoForm({ campus = 'Campus Restinga' }) {
+    const { buscarLocal, localSelecionado } = useLocais();
+    const { buscarEspaco, handleSave, loading, error, message } = useEspacos();
 
     const { id } = useParams(); // Se houver ID, é edição. Se não, é criação.
     const navigate = useNavigate(); // para navegar de volta para a página de listagem após criar o local
+    const location = useLocation();
+    const localId = location.state?.localId; // Pega o localId passado pela navegação
     const editando = Boolean(id); // Verifica se estamos editando ou criando
     const [errors, setErrors] = useState({}); // Para armazenar erros de validação
 
     // estados dos campos
     const [nome, setNome] = useState('');
-    const [endereco, setEndereco] = useState('');
-
-    // Para carregar dados apenas se for edição
-    useEffect(() => {
-        if (editando) {
-            buscarLocal(id);
-        }
-    }, [id]);
+    const [capacidade, setCapacidade] = useState('');
+    const [predioBloco, setPredioBloco] = useState('');
+    const [recursosDisponiveis, setRecursosDisponiveis] = useState('');
+    const [ativo, setAtivo] = useState(true);
 
     useEffect(() => {
-        if (localSelecionado) {
-            setNome(localSelecionado.nome || '');
-            setEndereco(localSelecionado.endereco || '');
+        if (localId) {
+            buscarLocal(localId);
         }
-    }, [localSelecionado]);
-
-    // faz as validações de campo e incrementa os erros na variável de estado errors.
-    const validar = () => {
-        let novosErros = {};
-
-        if (!nome.trim()) {
-            novosErros.nome = 'Nome é obrigatório';
-        } else if (nome.length < 3) {
-            novosErros.nome = 'Nome deve ter pelo menos 3 caracteres';
-        } else if (/^\d+$/.test(nome)) {
-            novosErros.nome = 'Nome não pode ser só números';
-        }
-
-        if (!endereco.trim()) {
-            novosErros.endereco = 'Endereço é obrigatório';
-        } else if (endereco.length < 10) {
-            novosErros.endereco = 'Endereço deve ter pelo menos 10 caracteres';
-        } else if (!/\d/.test(endereco)) {
-            novosErros.endereco = 'Endereço deve conter número';
-        }
-
-        setErrors(novosErros);
-
-        return Object.keys(novosErros).length === 0;
-    };
+    }, [localId]);
 
     const handleSalvar = async () => {
-        if (!validar()) return;
-
-        const resultado = await handleSave({
-            id: editando ? id : null,
+        const dados = {
             nome,
-            endereco,
-        });
+            capacidade,
+            predio_bloco: predioBloco,
+            recursos_disponiveis: recursosDisponiveis,
+            ativo,
+            local: localId, // 🔥 AQUI
+        };
 
-        if (resultado.sucesso) {
-            const timeout = setTimeout(() => {
-                navigate('/listarLocais');
-            }, 1000);
-        } else {
-            if (resultado.erro) {
-                setErrors(resultado.erro);
-            }
-        }
+        await handleSave(dados);
     };
 
     return (
@@ -99,27 +59,44 @@ export default function LocalForm({ campus = 'Campus Restinga' }) {
                             {loading && (
                                 <p className="text-muted">Carregando...</p>
                             )}
+                            <h1
+                                className="fw-bold ms-1 mb-0"
+                                style={{ color: '#00A44B' }}
+                            >
+                                {localSelecionado?.nome}
+                            </h1>
                             {
-                                <LocalCard
+                                <EspacoCard
                                     nome={nome}
                                     setNome={setNome}
-                                    endereco={endereco}
-                                    setEndereco={setEndereco}
+                                    capacidade={capacidade}
+                                    setCapacidade={setCapacidade}
+                                    predioBloco={predioBloco}
+                                    setPredioBloco={setPredioBloco}
+                                    recursosDisponiveis={recursosDisponiveis}
+                                    setRecursosDisponiveis={
+                                        setRecursosDisponiveis
+                                    }
+                                    ativo={ativo}
+                                    setAtivo={setAtivo}
                                     titulo={
                                         editando
-                                            ? 'Editar Local'
-                                            : 'Criar Local'
+                                            ? 'Editar Espaço'
+                                            : 'Criar Espaço'
                                     }
                                     erros={errors}
                                 />
                             }
+
                             <Row className="my-3">
                                 <Col className="d-flex justify-content-end gap-3">
                                     <Button
                                         size="lg"
                                         variant="secondary"
                                         className="fw-bold"
-                                        onClick={() => navigate(-1)}
+                                        onClick={() =>
+                                            navigate('/listarLocaisEspacos')
+                                        }
                                     >
                                         <MdArrowBack
                                             size={20}
@@ -128,7 +105,7 @@ export default function LocalForm({ campus = 'Campus Restinga' }) {
                                         Voltar
                                     </Button>
                                     <Button
-                                        onClick={handleSalvar}
+                                        //onClick={handleSalvar}
                                         size="lg"
                                         variant="success"
                                         className="fw-bold"
@@ -143,8 +120,8 @@ export default function LocalForm({ campus = 'Campus Restinga' }) {
                                             className="me-2"
                                         />
                                         {editando
-                                            ? 'Atualizar Local'
-                                            : 'Criar Local'}
+                                            ? 'Atualizar Espaço'
+                                            : 'Criar Espaço'}
                                     </Button>
                                 </Col>
                             </Row>

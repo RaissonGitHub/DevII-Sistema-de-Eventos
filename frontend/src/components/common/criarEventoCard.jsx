@@ -33,6 +33,7 @@ export default function AdicionarEvento({
     navigate,
     handleSalvar,
 }) {
+  
     return (
         <div>
             {/* Navbar fictícia do IFRS aqui */}
