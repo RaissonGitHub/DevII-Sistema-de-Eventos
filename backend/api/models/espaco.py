@@ -27,6 +27,14 @@ class Espaco(Base):
     ativo = models.BooleanField(verbose_name=_("Ativo"))
     local = models.ForeignKey(Local, on_delete=models.CASCADE, related_name="espacos")
 
+    class Meta:
+        permissions = [
+            ("ver_espaco", "Pode visualizar os espacos"),
+            ("criar_espaco", "Pode criar espacos"),
+            ("excluir_espaco", "Pode excluir espacos"),
+            ("atribuir_espaco", "Pode atribuir espacos"),
+        ]
+
     def clean(self):
         errors = {}
 

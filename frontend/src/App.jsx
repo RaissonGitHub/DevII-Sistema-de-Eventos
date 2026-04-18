@@ -9,13 +9,16 @@ import PermissoesPessoas from './pages/PermissoesPessoas';
 import LocaisEspacosListar from './pages/LocaisEspacosListar';
 import LocalForm from './pages/LocalForm';
 import LocaisListar from './pages/LocaisListar';
+import EspacoForm from './pages/EspacoForm';
 import Dashboard from './pages/Dashboard';
 import CadastroComplementar from './pages/CadastroComplementar';
 import AdicionarEvento from './pages/AdicionarEvento';
 import ListarEnvento from './pages/ListarEvento';
 import SessionTokenCallback from './pages/SessionTokenCallback';
 import Teste from './pages/Teste';
-import AdicionarModalidade from './pages/AdicionarModalidade';
+import ModalidadeFormulario from './pages/ModalidadeFormulario';
+import ModalidadesListar from './pages/ModalidadesListar';
+import DefinirCoordenadorEvento from './pages/DefinirCoordenadorEvento';
 
 function App() {
     useEffect(() => {
@@ -28,7 +31,7 @@ function App() {
         window.history.replaceState(
             {},
             document.title,
-            `${normalizedPathname}${search}${hash}`
+            `${normalizedPathname}${search}${hash}`,
         );
     }, []);
 
@@ -42,6 +45,8 @@ function App() {
                 <Route path="/adicionarLocal" element={<LocalForm />} />
                 <Route path="/listarLocaisEspacos" element={<LocaisEspacosListar />} />
                 <Route path="/editarLocal/:id" element={<LocalForm />} />
+                <Route path="/adicionarEspaco" element={<EspacoForm />} />
+                <Route path="/editarEspaco/:id" element={<EspacoForm />} />
                 <Route path="/permissoesPessoas" element={<PermissoesPessoas />} />
                 <Route path="/adicionarEvento" element={<AdicionarEvento/>}/>
                 <Route path="/ListarEventos" element={<ListarEnvento />} />
@@ -53,7 +58,11 @@ function App() {
                 <Route path="/session/auth" element={<SessionTokenCallback />} />
                 <Route path="/session/auth/*" element={<SessionTokenCallback />} />
                 <Route path="/teste"  element={<Teste />} />
-                <Route path="/adicionarModalidade"  element={<AdicionarModalidade />} />
+                <Route path="/listarModalidades"  element={<ModalidadesListar />} />
+                <Route path="/adicionarModalidade"  element={<ModalidadeFormulario />} />
+                <Route path="/editarModalidade/:id"  element={<ModalidadeFormulario />} />
+                <Route path="/atribuirCoordenador"  element={<DefinirCoordenadorEvento />} />
+
             </Routes>
         </div>
     );

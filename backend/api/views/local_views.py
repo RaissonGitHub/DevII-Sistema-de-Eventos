@@ -1,7 +1,9 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+
+# from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .perms_generic_view import IsAdmin
 
 from ..models.local import Local
 from ..serializers import LocalSerializer
@@ -10,7 +12,7 @@ from ..serializers import LocalSerializer
 class LocalListView(APIView):
     queryset = Local.objects.all()
     serializer_class = LocalSerializer
-    permission_classes = [AllowAny]  # modificar! permissão para admin
+    permission_classes = [IsAdmin]  # modificado
 
     def get(self, request, *args, **kwargs):
         locals = Local.objects.all()
@@ -28,7 +30,7 @@ class LocalListView(APIView):
 
 class LocalDetailView(APIView):
     # nível de objetos: local específico
-    permission_classes = [AllowAny]  # modificar! permissão para admin
+    permission_classes = [IsAdmin]  # modificado
 
     def get_object(self, pk):
         # função "básica" para pegar o local específico, caso exista. Se não existir, retorna None
@@ -42,6 +44,8 @@ class LocalDetailView(APIView):
         if not local:
             return Response({"erro": "Local não encontrado"}, status=404)
 
+        self.check_object_permissions(request, local)
+
         serializer = LocalSerializer(local)
         return Response(serializer.data)
 
@@ -49,6 +53,8 @@ class LocalDetailView(APIView):
         local = self.get_object(pk)
         if not local:
             return Response({"erro": "Local não encontrado"}, status=404)
+
+        self.check_object_permissions(request, local)
 
         serializer = LocalSerializer(local, data=request.data)
         if serializer.is_valid():
@@ -61,6 +67,8 @@ class LocalDetailView(APIView):
         local = self.get_object(pk)
         if not local:
             return Response({"erro": "Local não encontrado"}, status=404)
+
+        self.check_object_permissions(request, local)
 
         local.delete()
         return Response({"msg": "Deletado com sucesso"}, status=204)

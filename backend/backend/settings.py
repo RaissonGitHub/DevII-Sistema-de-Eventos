@@ -57,9 +57,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "guardian",
     "eventos_session",
     "api",
 ]
+
+# APARENTIMENTE tem q ter isso, fé fml
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

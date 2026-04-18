@@ -1,5 +1,9 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.core.validators import (
+    MaxLengthValidator,
+    MinLengthValidator,
+    MinValueValidator,
+)
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -24,6 +28,13 @@ class Modalidade(Base):
         help_text=_("Informe se a Modalidade emite certificado"),
     )
 
+    limite_vagas = models.IntegerField(
+        verbose_name=_("Número de vagas"),
+        help_text=_("Informe se há um limite de vagas"),
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
+
     ativo = models.BooleanField(
         verbose_name=_("Ativo"),
         help_text=_("Informe se a Modalidade está ativa"),
@@ -33,7 +44,7 @@ class Modalidade(Base):
     def clean(self):
         errors = {}
 
-        if len(self.nome.strip()) <= 3:
+        if len(self.nome.strip()) < 3:
             errors["nome"] = _("O nome deve ter pelo menos 3 caracteres.")
 
         if (

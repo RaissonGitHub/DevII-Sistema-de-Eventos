@@ -35,12 +35,12 @@ class CampoFormulario(Base):
         default=True,
     )
 
-    modalidade = models.ForeignKey(Modalidade, on_delete=models.RESTRICT)
+    modalidade = models.ForeignKey(Modalidade, on_delete=models.CASCADE)
 
     def clean(self):
         errors = {}
 
-        if len(self.nome.strip()) <= 3:
+        if len(self.nome.strip()) < 3:
             errors["nome"] = _("O nome deve ter pelo menos 3 caracteres.")
 
         if errors:
