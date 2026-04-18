@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../components/footer/Footer';
 import Container from 'react-bootstrap/esm/Container';
@@ -7,19 +7,19 @@ import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 import CustomFormCard from '../components/custom-form-card/FormularioCustomizado';
 import NavBar from '../components/nav_bar/NavBar';
+import Alerta from '../components/common/Alerta';
+import ModalPopup from '../components/common/ModalPopup';
 import { LuPencil } from 'react-icons/lu';
 import { MdCheckCircle } from 'react-icons/md';
 import { MdArrowBack } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import useFormularioDinamico from '../hooks/useFormularioDinamico';
 import { useModalidades } from '../hooks/useModalidades';
-import Alerta from '../components/common/Alerta';
 import { useTipoCampo } from '../hooks/useTipoCampo';
 import { pegarModalidade } from '../services/modalidadeService';
 import { pegarCampoFormulario } from '../services/campoFormularioService';
 import { pegarCriterioAvaliacao } from '../services/criterioAvaliacaoService';
 import eArray from '../utils/eArray';
-import ModalPopup from '../components/common/ModalPopup';
 
 export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
     const navigate = useNavigate();
@@ -50,12 +50,18 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
     const formularioCampos = useFormularioDinamico();
     const formularioCriterios = useFormularioDinamico();
 
-    const basePayload = () => ({
-        nome: titulo,
-        requer_avaliacao: requerAvaliacao,
-        emite_certificado: emiteCertificado,
-        limite_vagas: numeroVagas,
-    });
+    const paraArray = (data) =>
+        eArray(data) ? data : eArray(data?.results) ? data.results : [];
+
+    const basePayloadMemo = useMemo(
+        () => ({
+            nome: titulo,
+            requer_avaliacao: requerAvaliacao,
+            emite_certificado: emiteCertificado,
+            limite_vagas: numeroVagas,
+        }),
+        [titulo, requerAvaliacao, emiteCertificado, numeroVagas],
+    );
 
     const mostrarAlerta = (mensagem, variacao = 'danger') =>
         setAlerta((prev) => ({
@@ -78,17 +84,8 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                         pegarCriterioAvaliacao(),
                     ]);
 
-                const campos = eArray(campoData)
-                    ? campoData
-                    : eArray(campoData?.results)
-                      ? campoData.results
-                      : [];
-
-                const criterios = eArray(criterioData)
-                    ? criterioData
-                    : eArray(criterioData?.results)
-                      ? criterioData.results
-                      : [];
+                const campos = paraArray(campoData);
+                const criterios = paraArray(criterioData);
 
                 setTitulo(modalidadeData?.nome || '');
                 setRequerAvaliacao(Boolean(modalidadeData?.requer_avaliacao));
@@ -124,19 +121,10 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
         let res;
 
         try {
-            if (modoEdicao) {
-                res = await submeterAtualizacaoModalidade(id, {
-                    ...basePayload(),
-                    campos,
-                    criterios,
-                });
-            } else {
-                res = await submeterModalidade({
-                    ...basePayload(),
-                    campos,
-                    criterios,
-                });
-            }
+            const payload = { ...basePayloadMemo, campos, criterios };
+            if (modoEdicao)
+                res = await submeterAtualizacaoModalidade(id, payload);
+            else res = await submeterModalidade(payload);
         } catch {
             mostrarAlerta('Não foi possível salvar a modalidade.');
             return;
@@ -156,7 +144,7 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
         );
         setTimeout(() => {
             navigate('/listarModalidades');
-        }, 1000);
+        }, 3000);
     }
 
     async function handleExcluirModalidade() {
@@ -167,7 +155,7 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
             mostrarAlerta('Modalidade excluída com sucesso.', 'success');
             setTimeout(() => {
                 navigate('/listarModalidades');
-            }, 1000);
+            }, 3000);
         } catch {
             mostrarAlerta('Não foi possível excluir a modalidade.');
         }
