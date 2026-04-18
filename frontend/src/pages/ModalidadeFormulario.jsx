@@ -29,11 +29,15 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
 
     const [titulo, setTitulo] = useState('');
     const [requerAvaliacao, setRequerAvaliacao] = useState(false);
+    const [requerAvaliacaoSubmissao, setRequerAvaliacaoSubmissao] =
+        useState(false);
     const [emiteCertificado, setEmiteCertificado] = useState(false);
-    const [numeroVagas, setNumeroVagas] = useState(0);
+    const [limiteVagas, setLimiteVagas] = useState(0);
+    const [limiteAvaliadores, setLimiteAvaliadores] = useState(0);
     const [carregandoEdicao, setCarregandoEdicao] = useState(false);
     const [camposIniciais, setCamposIniciais] = useState([]);
     const [criteriosIniciais, setCriteriosIniciais] = useState([]);
+
     const {
         submeterModalidade,
         submeterAtualizacaoModalidade,
@@ -58,9 +62,18 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
             nome: titulo,
             requer_avaliacao: requerAvaliacao,
             emite_certificado: emiteCertificado,
-            limite_vagas: numeroVagas,
+            limite_vagas: limiteVagas,
+            requer_avaliacao_submissao: requerAvaliacaoSubmissao,
+            limite_avaliadores: limiteAvaliadores,
         }),
-        [titulo, requerAvaliacao, emiteCertificado, numeroVagas],
+        [
+            titulo,
+            requerAvaliacao,
+            emiteCertificado,
+            limiteVagas,
+            requerAvaliacaoSubmissao,
+            limiteAvaliadores,
+        ],
     );
 
     const mostrarAlerta = (mensagem, variacao = 'danger') =>
@@ -89,8 +102,11 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
 
                 setTitulo(modalidadeData?.nome || '');
                 setRequerAvaliacao(Boolean(modalidadeData?.requer_avaliacao));
+                setRequerAvaliacaoSubmissao(
+                    Boolean(modalidadeData?.requer_avaliacao_submissao),
+                );
                 setEmiteCertificado(Boolean(modalidadeData?.emite_certificado));
-                setNumeroVagas(Number(modalidadeData?.limite_vagas || 0));
+                setLimiteVagas(Number(modalidadeData?.limite_vagas || 0));
                 setCamposIniciais(
                     campos.filter(
                         (campo) => Number(campo.modalidade) === Number(id),
@@ -189,6 +205,25 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                                         onChange: (e) => setRequerAvaliacao(e),
                                     },
                                     {
+                                        name: 'requer_avaliacao_submissao',
+                                        titulo: 'Requer Avaliação de submissão',
+                                        tipo: 'switch',
+                                        preValue: requerAvaliacaoSubmissao,
+                                        onChange: (e) =>
+                                            setRequerAvaliacaoSubmissao(e),
+                                    },
+                                    {
+                                        name: 'limite_avaliadores',
+                                        titulo: 'Número de avaliadores',
+                                        tipo: 'number',
+                                        preValue: limiteAvaliadores,
+                                        onChange: (e) =>
+                                            setLimiteAvaliadores(e),
+                                        desativado:
+                                            !requerAvaliacao &&
+                                            !requerAvaliacaoSubmissao,
+                                    },
+                                    {
                                         name: 'emite_certificado',
                                         titulo: 'Emite Certificado',
                                         tipo: 'switch',
@@ -199,8 +234,8 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                                         name: 'limite_vagas',
                                         titulo: 'Número de vagas',
                                         tipo: 'number',
-                                        preValue: numeroVagas,
-                                        onChange: (e) => setNumeroVagas(e),
+                                        preValue: limiteVagas,
+                                        onChange: (e) => setLimiteVagas(e),
                                     },
                                 ]}
                             />
@@ -267,7 +302,7 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                                     },
                                 ]}
                             />
-                            {requerAvaliacao && (
+                            {(requerAvaliacao || requerAvaliacaoSubmissao) && (
                                 <CustomFormCard
                                     add
                                     titulo="Critérios de Avaliação"
