@@ -177,7 +177,16 @@ export default function EventosListar() {
                                                         Designar Coordenador de
                                                         Evento
                                                     </Button>
-
+                                                    
+                                                    <Button
+                                                        variant="success"
+                                                        size="sm"
+                                                        as={Link}
+                                                        to={`/atribuirOrganizador?eventoId=${evento.id}`}
+                                                    >
+                                                        Designar Organizador de
+                                                        Evento
+                                                    </Button>
                                                     <Button
                                                         variant="danger"
                                                         size="sm"

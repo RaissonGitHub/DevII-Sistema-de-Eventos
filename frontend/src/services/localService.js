@@ -4,7 +4,9 @@ import { pegarTokenCsrf } from './csrfService';
 
 export const pegarLocais = async () => {
     try {
-        const response = await axios.get(`${API_URL}/api/locais/`);
+        const response = await axios.get(`${API_URL}/api/locais/`, {
+        withCredentials: true,
+    });
         return response.data;
     } catch (erro) {
         console.error('Status do Erro:', erro.response?.status);
@@ -18,7 +20,9 @@ export const pegarLocal = async (id) => {
     if (!id) return null;
 
     try {
-        const response = await axios.get(`${API_URL}/api/locais/${id}/`);
+        const response = await axios.get(`${API_URL}/api/locais/${id}/`, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (erro) {
         console.error('Status do Erro:', erro.response?.status);
@@ -35,6 +39,7 @@ export const criarLocal = async (dados) => {
 
         const response = await axios.post(`${API_URL}/api/locais/`, dados, {
             headers: { 'X-CSRFToken': csrfToken },
+            withCredentials: true,
         });
 
         return response.data;
@@ -56,6 +61,7 @@ export const atualizarLocal = async (id, dados) => {
 
         const response = await axios.put(`${API_URL}/api/locais/${id}/`, dados, {
             headers: { 'X-CSRFToken': csrfToken },
+            withCredentials: true,
         });
 
         return response.data;

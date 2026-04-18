@@ -62,6 +62,26 @@ export const definirCoordenadorEvento = async (eventoId, userId) => {
     return response.data;
 };
 
+export const removerCoordenadorEvento = async (eventoId, userId) => {
+    if (!eventoId || !userId) return null;
+
+    const csrfData = await pegarTokenCsrf();
+    const csrfToken = csrfData?.csrfToken || '';
+
+    const response = await axios.delete(
+        `${API_URL}/api/eventos/${eventoId}/coordenador/`,
+        {
+            data: { user_id: userId },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            withCredentials: true,
+        },
+    );
+
+    return response.data;
+};
+
 export const listarCoordenadoresEvento = async (eventoId) => {
     if (!eventoId) return { coordenadores: [] };
 
@@ -85,6 +105,26 @@ export const definirOrganizadorEvento = async (eventoId, userId) => {
         `${API_URL}/api/eventos/${eventoId}/organizador/`,
         { user_id: userId },
         {
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            withCredentials: true,
+        },
+    );
+
+    return response.data;
+};
+
+export const removerOrganizadorEvento = async (eventoId, userId) => {
+    if (!eventoId || !userId) return null;
+
+    const csrfData = await pegarTokenCsrf();
+    const csrfToken = csrfData?.csrfToken || '';
+
+    const response = await axios.delete(
+        `${API_URL}/api/eventos/${eventoId}/organizador/`,
+        {
+            data: { user_id: userId },
             headers: {
                 'X-CSRFToken': csrfToken,
             },

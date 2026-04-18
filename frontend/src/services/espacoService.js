@@ -8,7 +8,9 @@ export const pegarEspacos = async (localId = Null) => {
         if (localId) {
             url += `?local=${localId}`;
         }
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (erro) {
         console.error('Status do Erro:', erro.response?.status);
@@ -21,7 +23,9 @@ export const pegarEspaco = async (id) => {
     if (!id) return null;
 
     try {
-        const response = await axios.get(`${API_URL}/api/espacos/${id}/`);
+        const response = await axios.get(`${API_URL}/api/espacos/${id}/`, {
+            withCredentials: true,
+        });
         return response.data;
     } catch (erro) {
         console.error('Status do Erro:', erro.response?.status);
@@ -37,6 +41,7 @@ export const criarEspaco = async (dados) => {
 
         const response = await axios.post(`${API_URL}/api/espacos/`, dados, {
             headers: { 'X-CSRFToken': csrfToken },
+            withCredentials: true,
         });
 
         return response.data;
@@ -59,6 +64,7 @@ export const atualizarEspaco = async (id, dados) => {
             dados,
             {
                 headers: { 'X-CSRFToken': csrfToken },
+                withCredentials: true,
             },
         );
 
@@ -77,6 +83,7 @@ export const excluirEspaco = async (id) => {
         const csrfToken = csrfData?.csrfToken || '';
         const response = await axios.delete(`${API_URL}/api/espacos/${id}/`, {
             headers: { 'X-CSRFToken': csrfToken },
+            withCredentials: true,
         });
         return response.data;
     } catch (erro) {
