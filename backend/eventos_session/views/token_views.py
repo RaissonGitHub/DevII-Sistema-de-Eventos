@@ -81,16 +81,22 @@ def obter_tokens(request):
 @permission_classes([AllowAny])
 @throttle_classes([AnonRateThrottle])
 def renovar_token(request):
-    # [TEMP-FALLBACK] Tentar ler refresh_token do cookie primeiro 
+    # Fluxo atual: somente refresh_token em cookie HttpOnly.
     refresh_token = request.COOKIES.get("refresh_token")
 
-    # [TEMP-FALLBACK] Fallback para Bearer header e request.data durante migração
+    # [TEMP-FALLBACK REMOVIDO] Fallback para Bearer header e request.data desativado.
+    # if not refresh_token:
+    #     auth_header = request.META.get("HTTP_AUTHORIZATION", "")
+    #     if auth_header.startswith("Bearer "):
+    #         refresh_token = auth_header.split(" ", 1)[1]
+    # if not refresh_token:
+    #     refresh_token = request.data.get("refresh_token")
+
     if not refresh_token:
-        auth_header = request.META.get("HTTP_AUTHORIZATION", "")
-        if auth_header.startswith("Bearer "):
-            refresh_token = auth_header.split(" ", 1)[1]
-    if not refresh_token:
-        refresh_token = request.data.get("refresh_token")
+        return Response(
+            {"message": "Refresh token ausente no cookie"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     try:
         access_token = TokenService.refresh_token(refresh_token)

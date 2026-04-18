@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/esm/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alerta from '../components/common/Alerta';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useEventos } from '../hooks/useEventos';
 import { useUsers } from '../hooks/useUsers';

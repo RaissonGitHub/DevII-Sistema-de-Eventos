@@ -2,13 +2,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from guardian.shortcuts import assign_perm, get_users_with_perms, remove_perm
 from ..serializers.evento_serializer import EventoSerializer
 from ..models.evento import Evento
 
 # from api.permissions import IsAdmin, PodeGerenciarEvento
 from .perms_generic_view import PodeCoordenarEvento, PodeOrganizarEvento
+
+
+User = get_user_model()
 
 
 class EventoListView(APIView):
