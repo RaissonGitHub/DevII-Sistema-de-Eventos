@@ -7,10 +7,25 @@ import CriarEventoCard from '../components/common/criarEventoCard';
 import { useParams, useNavigate } from 'react-router-dom';
 import { criarEvento, buscarOpcoesFormulario, atualizarEvento, buscarEventoPorId } from '../services/eventoService';
 import { useState, useEffect } from 'react';
+import { useArquivo } from '../hooks/useArquivo';
 
+<<<<<<< HEAD
 export default function CriarEvento() {
     const { id } = useParams();
     const navigate = useNavigate();
+=======
+
+export default function CriarEvento(){
+    const navigate = useNavigate() ;
+    const [nome, setNome] = useState("")
+    const [descricao, setDescricao] = useState("")
+    const [status, setStatus] = useState("")
+    const [carga_horaria,setCargaHoraria] = useState(0)
+    const [setor, setSetor] = useState("")
+    const [tema, setTema] = useState("")
+    const [opcoes, setOpcoes] = useState({ status: [], setores: [] });
+    const { arquivos, limparArquivos } = useArquivo();
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
     
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -47,6 +62,7 @@ export default function CriarEvento() {
         setErrors({});
         setExibirSucesso(false);
 
+<<<<<<< HEAD
         const dadosEvento = {
             nome,
             descricao,
@@ -72,6 +88,32 @@ export default function CriarEvento() {
             if (erro.response && erro.response.data) {
                 setErrors(erro.response.data);
             }
+=======
+        try{
+            const novoEvento = {
+                nome,
+                descricao,
+                status_evento: status,
+                carga_horaria,
+                setor,
+                tema,
+                arquivos: arquivos // Inclui os arquivos anexados
+            }
+            await criarEvento(novoEvento)
+            alert('Evento criado com sucesso!');
+            navigate("/")
+            // Limpa todos os campos
+            setNome("")
+            setDescricao("")
+            setCargaHoraria(0)
+            setStatus("")
+            setTema("")
+            setSetor("")
+            limparArquivos() // Limpa os arquivos anexados
+        }catch (erro) {
+            console.error('Erro ao criar Evento:', erro);
+            alert('Erro ao criar evento. Por favor, tente novamente.');
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
         }
     };
 

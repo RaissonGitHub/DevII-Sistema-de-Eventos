@@ -1,7 +1,9 @@
 from django.urls import path
 
 from .views import csrf_token_view as views
+from .views.arquivo_view import ArquivoListView
 from .views.cadastro_complementar_view import CadastroComplementarView
+<<<<<<< HEAD
 from .views.campo_formulario_view import (
     CampoFormularioDetailView,
     CampoFormularioListView,
@@ -26,6 +28,14 @@ from .views.modalidade_view import ModalidadeDetailView, ModalidadeListView
 from .views.perms_view import PermissaoListView
 from .views.tipo_campo_view import TipoCampoListView
 from .views.tipo_etapa_view import TipoEtapaListView
+=======
+from .views.choices_evento_view import OpcoesFormularioView
+from .views.cronograma_view import CronogramaDetailView, CronogramaListView
+from .views.evento_view import EventoListView
+from .views.groups_view import GrupoListView, GrupoPermissoesView
+from .views.local_views import LocalDetailView, LocalListView
+from .views.perms_view import PermissaoListView
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
 from .views.user_view import UserListView, UserPermissoesView
 from .views.visao_geral_view import DashboardView
 
@@ -36,7 +46,7 @@ urlpatterns = [
     # paths relacionados a local
     path("locais/", LocalListView.as_view()),
     path("eventos/", EventoListView.as_view()),
-    path("eventos/opcoes/",OpcoesFormularioView.as_view()),
+    path("eventos/opcoes/", OpcoesFormularioView.as_view()),
     path("locais/<int:pk>/", LocalDetailView.as_view()),
     path("espacos/", EspacoListView.as_view()),
     path("espacos/<int:pk>/", EspacoDetailView.as_view()),
@@ -52,6 +62,7 @@ urlpatterns = [
     # endpoint pra pegar o csrf token, que o frontend vai usar pra autenticação
     path("csrf/", views.get_csrf_token),
     path("dashboard/", DashboardView.as_view()),
+<<<<<<< HEAD
     path('eventos/<int:pk>/update/', EventoUpdateView.as_view()),
     path('eventos/<int:pk>/', EventoDetailView.as_view()),
     path('eventos/<int:pk>/delete/', EventoDeleteView.as_view()),
@@ -66,5 +77,12 @@ urlpatterns = [
     path('campo_formulario/<int:pk>/', CampoFormularioDetailView.as_view()),
     path('criterio_avaliacao/', CriterioAvaliacaoListView.as_view()),
     path('criterio_avaliacao/<int:pk>/', CriterioAvaliacaoDetailView.as_view()),
+=======
+    # paths relacionados a arquivos
+    path("arquivos/", ArquivoListView.as_view()),
+    # paths relacionados a cronogramas
+    path("cronogramas/", CronogramaListView.as_view()),
+    path("cronogramas/<int:pk>/", CronogramaDetailView.as_view()),
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
 ]
 # fmt: on

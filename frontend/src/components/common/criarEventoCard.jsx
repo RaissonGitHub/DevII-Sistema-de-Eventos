@@ -8,7 +8,12 @@ import {
 } from 'react-icons/md';
 import SecaoFormulario from './secaoFormulario';
 import { BsTrash } from 'react-icons/bs';
+<<<<<<< HEAD
 import Alerta from '../common/Alerta';
+=======
+import { useArquivo } from '../../hooks/useArquivo';
+import { useCsrf } from '../../hooks/useCsrf';
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
 
 export default function AdicionarEvento({
     nome, setNome,
@@ -123,6 +128,7 @@ export default function AdicionarEvento({
                         </Row>
                     </SecaoFormulario>
 
+<<<<<<< HEAD
                     {/* SEÇÃO 2: CONTROLE DE PRAZOS (FASES) */}
                     <SecaoFormulario icone={MdAccessTime} titulo="Controle de Prazos (Fases)">
                         <div className="p-3 border rounded mb-3">
@@ -209,6 +215,54 @@ export default function AdicionarEvento({
                             variant={id ? "warning" : "success"} 
                             className="px-5 shadow-sm"
                             onClick={handleSalvar}
+=======
+export default function AdicionarEvento({nome,setNome,descricao,setDescricao,tema,setTema,status,setStatus,setor,setSetor,carga_horaria,setCargaHoraria,opcoes,handleSalvar}) {
+    const { arquivos, carregando: carregandoArquivo, uploadArquivo, removerArquivo, limparArquivos } = useArquivo();
+    const { csrfToken } = useCsrf();
+
+    // Função para lidar com a seleção de arquivo
+    const handleArquivoSelecionado = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            try {
+                await uploadArquivo(file, csrfToken);
+                alert('Arquivo enviado com sucesso!');
+            } catch (error) {
+                alert('Erro ao enviar arquivo: ' + error.message);
+            }
+        }
+    };
+  return (
+    <div >
+      {/* Navbar fictícia do IFRS aqui */}
+      
+      <Container className="py-5">
+        <Form>
+          {/* SEÇÃO 1: DADOS BÁSICOS */}
+          <SecaoFormulario icone={MdEdit} titulo="Dados Básicos do Evento">
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Nome do Evento</Form.Label>
+                  <Form.Control placeholder="Escreva o nome do evento" value={nome} onChange={(nome) => {setNome(nome.target.value)}} type="text" style={{ backgroundColor: '#eeeeee' }} />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Tema Principal</Form.Label>
+                  <Form.Control placeholder='informe o tema do evento' type="text" style={{ backgroundColor: '#eeeeee' }} value={tema} onChange={(tema)=>{setTema(tema.target.value)}}/>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group className="mb-3">
+                        <Form.Label className="fw-bold">Setor Responsável</Form.Label>
+                        <Form.Select 
+                            value={setor} 
+                            onChange={(e) => setSetor(e.target.value)}
+                            style={{ backgroundColor: '#eeeeee', border: 'none' }}
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
                         >
                             {id ? "Salvar Alterações" : "Cadastrar Evento"}
                         </Button>
@@ -222,7 +276,71 @@ export default function AdicionarEvento({
                     variacao="success" 
                     duracao={5000} 
                 />
+<<<<<<< HEAD
             )}
         </div>
     );
+=======
+                <input type="button" value="Adicionar" className="btn btn-success"/>
+            </div>
+         </SecaoFormulario>
+        
+
+        {/* SEÇÃO: ANEXOS E FINALIZAÇÃO */}
+        <SecaoFormulario icone={MdAttachFile} titulo="Anexos e Finalização">
+            <Form.Group className="mb-4">
+                <Form.Label className="fw-bold" style={{ color: '#00A44B' }}>Adicionar Arquivo</Form.Label>
+                <div className="p-0" style={{ backgroundColor: '#eeeeee', borderRadius: '8px' }}>
+                    <Form.Control
+                        type="file"
+                        className="bg-transparent border-1"
+                        style={{ cursor: 'pointer' }}
+                        onChange={handleArquivoSelecionado}
+                        disabled={carregandoArquivo}
+                    />
+                </div>
+                {carregandoArquivo && <small className="text-muted">Enviando arquivo...</small>}
+            </Form.Group>
+
+            {/* Lista de arquivos enviados */}
+            {arquivos.length > 0 && (
+                <div className="mb-4">
+                    <h6 className="fw-bold" style={{ color: '#00A44B' }}>Arquivos Anexados:</h6>
+                    <div className="list-group">
+                        {arquivos.map((arquivo, index) => (
+                            <div key={arquivo.id || index} className="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{arquivo.nome_arquivo}</strong>
+                                    {arquivo.arquivo && (
+                                        <small className="text-muted ms-2">
+                                            ({arquivo.arquivo.split('/').pop()})
+                                        </small>
+                                    )}
+                                </div>
+                                <Button
+                                    variant="link"
+                                    className="text-danger p-0"
+                                    onClick={() => removerArquivo(index)}
+                                >
+                                    <BsTrash size={16} />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </SecaoFormulario>
+
+          {/* BOTÕES DE FINALIZAÇÃO */}
+          <div className="d-flex justify-content-end gap-3 mt-5 mb-5">
+            <Button variant="secondary" className="px-4">Voltar</Button>
+            <input type="button" onClick={handleSalvar} value="Cadastrar Evento" className="btn btn-success"/>
+          </div>
+        </Form>
+      </Container>
+      
+      {/* Rodapé verde aqui */}
+    </div>
+  );
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
 }

@@ -11,4 +11,8 @@ from .perms_view import *
 from .tipo_campo_view import *
 from .user_view import *
 from .visao_geral_view import *
+<<<<<<< HEAD
 from .perms_generic_view import *
+=======
+from .cadastro_complementar_view import *
+>>>>>>> 6ba585b (Mudando de brain..comite necessário)
