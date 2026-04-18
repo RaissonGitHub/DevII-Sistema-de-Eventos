@@ -47,6 +47,7 @@ function App() {
             {/* prettier-ignore */}
             <Routes>
                 <Route path="/" element={<Home />} />
+<<<<<<< HEAD
                 <Route path="/permissoesGrupos" element={protegido(<PermissoesGroups />, ADMIN_GROUPS)} />
                 <Route path="/usuarioGrupos" element={protegido(<PessoasGrupos />, ADMIN_GROUPS)} />
                 <Route path="/adicionarLocal" element={protegido(<LocalForm />, ADMIN_GROUPS)} />
@@ -60,6 +61,22 @@ function App() {
                 <Route path="/listarLocais" element={protegido(<LocaisListar />, ADMIN_GROUPS)} />
                 <Route path="/dashboard" element={protegido(<Dashboard />, ADMIN_GROUPS)} />
                 <Route path="/cadastroComplementar" element={<CadastroComplementar />} />
+=======
+                <Route path="/permissoesGrupos" element={<PermissoesGroups />} />
+                <Route path="/usuarioGrupos" element={<PessoasGrupos />} />
+                <Route path="/adicionarLocal" element={<LocalForm />} />
+                <Route path="/listarLocaisEspacos" element={<LocaisEspacosListar />} />
+                <Route path="/editarLocal/:id" element={<LocalForm />} />
+                <Route path="/adicionarEspaco" element={<EspacoForm />} />
+                <Route path="/editarEspaco/:id" element={<EspacoForm />} />
+                <Route path="/permissoesPessoas" element={<PermissoesPessoas />} />
+                <Route path="/adicionarEvento" element={<AdicionarEvento/>}/>
+                <Route path="/editarEvento/:id" element={<AdicionarEvento/>}/>
+                <Route path="/ListarEventos" element={<ListarEnvento />} />
+                <Route path="/listarLocais" element={<LocaisListar />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/cadastroComplementar"  element={<CadastroComplementar />} />
+>>>>>>> 75c3644 (Minhas alterações na edição de eventos)
                 <Route path="/session/token/" element={<SessionTokenCallback />} />
                 <Route path="/session/token/*" element={<SessionTokenCallback />} />
                 <Route path="/session/auth" element={<SessionTokenCallback />} />

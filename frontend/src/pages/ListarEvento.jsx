@@ -22,7 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../components/nav_bar/NavBar';
 import Footer from '../components/footer/Footer';
 import Card from '../components/common/Card';
-import { listarEventos, deletarEvento } from '../services/eventoService';
+import { listarEventos, deletarEvento,atualizarEvento } from '../services/eventoService';
 import { API_URL } from '../config';
 import eArray from '../utils/eArray';
 import Alerta from '../components/common/Alerta'
@@ -32,6 +32,7 @@ export default function EventosListar() {
     const [carregando, setCarregando] = useState(true);
     const [mensagem, setMensagem] = useState(''); // ✅ TASK 78
     const [alerta,setAlerta] = useState('')
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,6 +67,31 @@ export default function EventosListar() {
             setMensagem(erroMsg);
         }
     };
+
+    const editarEvento = async (id, dados) => {
+            setMensagem("")
+            try {
+                const eventoAtualizado = await atualizarEvento(id, dados);
+    
+                // atualiza lista
+                setEventos((prev) =>
+                    prev.map((evento) =>
+                        evento.id === id ? eventoAtualizado : evento,
+                    ),
+                );
+    
+                setMensagem('evento atualizado com sucesso!');
+                return true;
+            } catch (erro) {
+                console.error('Erro ao atualizar local:', erro);
+    
+                setError(erro.response?.data || 'Erro ao atualizar local');
+                return false;
+            } finally {
+                setLoading(false);
+            }
+        };
+    
 
     return (
         <div className="d-flex flex-column min-vh-100 bg-light">
@@ -197,6 +223,15 @@ export default function EventosListar() {
                                                         }
                                                     >
                                                         <MdDelete size={22}/>
+                                                    </Button>
+
+                                                    <Button
+                                                    variant='warning'
+                                                    size='sm'
+                                                    onClick={()=>
+                                                        navigate(`/editarEvento/${evento.id}`)
+                                                    }>
+                                                       <MdEdit size={22}/> 
                                                     </Button>
                                                 </div>
                                             </ListGroup.Item>

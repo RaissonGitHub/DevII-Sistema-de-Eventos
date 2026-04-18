@@ -42,6 +42,32 @@ export const deletarEvento = async (eventoId) => {
     return response.data;
 };
 
+export const buscarEventoPorId = async (id) => {
+    if (!id) return null;
+    const response = await axios.get(`${API_URL}/api/eventos/${id}/`, {
+    });
+    return response.data;
+};
+
+export const atualizarEvento = async (id, dados) => {
+    if (!id) return null;
+
+    try {
+        const csrfData = await pegarTokenCsrf();
+        const csrfToken = csrfData?.csrfToken || '';
+
+        const response = await axios.put(`${API_URL}/api/eventos/${id}/update/`, dados, {
+            headers: { 'X-CSRFToken': csrfToken },
+        });
+
+        return response.data;
+    } catch (erro) {
+        console.error('Status do Erro:', erro.response?.status);
+        console.error('Mensagem do Django:', erro.response?.data);
+        throw erro;
+    }
+};
+
 export const definirCoordenadorEvento = async (eventoId, userId) => {
     if (!eventoId || !userId) return null;
 

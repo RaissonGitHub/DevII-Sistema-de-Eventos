@@ -42,7 +42,7 @@ class EventoListView(APIView):
 
 
 class EventoDetailView(APIView):
-    permission_classes = [PodeCoordenarEvento]
+    permission_classes = [AllowAny]
 
     def get(self, request, pk):
         try:
@@ -58,7 +58,7 @@ class EventoDetailView(APIView):
 
 
 class EventoUpdateView(APIView):
-    permission_classes = [PodeCoordenarEvento]
+    permission_classes = [AllowAny]
 
     def put(self, request, pk):
         try:
