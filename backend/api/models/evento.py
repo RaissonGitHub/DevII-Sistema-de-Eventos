@@ -4,6 +4,7 @@ from django.core.validators import (
     MinValueValidator,
 )
 from django.db import models
+from django.contrib import admin
 from ..enumerations.status_evento import StatusEvento
 from ..enumerations.setor import Setor
 from .base import Base
@@ -87,3 +88,9 @@ class Evento(Base):
 
         if errors:
             raise ValidationError(errors)
+
+
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("id", "nome", "status_evento", "setor", "carga_horaria")
+    list_filter = ("status_evento", "setor")
+    search_fields = ("nome", "tema")
