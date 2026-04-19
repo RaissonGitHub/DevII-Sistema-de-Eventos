@@ -40,13 +40,17 @@ MODALIDADES_DATA = [
     {
         "nome": "Palestra",
         "requer_avaliacao": False,
+        "requer_avaliacao_submissao": False,
         "emite_certificado": True,
+        "limite_avaliadores": 0,
         "ativo": True,
     },
     {
         "nome": "Oficina",
         "requer_avaliacao": True,
+        "requer_avaliacao_submissao": True,
         "emite_certificado": True,
+        "limite_avaliadores": 2,
         "ativo": True,
     },
 ]
@@ -221,6 +225,39 @@ def seed_eventos():
     print(f"Ja existiam: {existing if existing else 'nenhum'}")
 
 
+def seed_admin_user():
+    """Cria um superusuário padrão 'admin' com senha 'admin' e o adiciona ao grupo 'Administrador'."""
+    from django.contrib.auth import get_user_model
+    from django.contrib.auth.models import Group
+
+    User = get_user_model()
+    username = "admin"
+    password = "admin"
+    group_name = "Administrador"
+
+    user = User.objects.filter(username=username).first()
+    if user:
+        print(f"Superusuário '{username}' já existe.")
+    else:
+        # email obrigatório pode variar; usar email genérico
+        try:
+            User.objects.create_superuser(
+                username=username, email="admin@example.com", password=password
+            )
+            print(f"Superusuário '{username}' criado com sucesso.")
+        except TypeError:
+            # alguns projetos usam campos personalizados (ex.: sem email)
+            user = User.objects.create_superuser(username=username, password=password)
+            print(f"Superusuário '{username}' criado (compatibilidade sem email).")
+
+    # garantir que o grupo exista e adicionar o usuário
+    group, _ = Group.objects.get_or_create(name=group_name)
+    user = User.objects.get(username=username)
+    user.groups.add(group)
+    user.save()
+    print(f"Usuário '{username}' adicionado ao grupo '{group_name}'.")
+
+
 if __name__ == "__main__":
     setup_django()
     seed_groups()
@@ -228,3 +265,4 @@ if __name__ == "__main__":
     seed_espacos()
     seed_modalidades()
     seed_eventos()
+    seed_admin_user()

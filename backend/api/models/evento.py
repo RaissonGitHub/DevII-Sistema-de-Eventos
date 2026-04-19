@@ -4,14 +4,9 @@ from django.core.validators import (
     MinValueValidator,
 )
 from django.db import models
-<<<<<<< HEAD
+from django.contrib import admin
 from ..enumerations.status_evento import StatusEvento
 from ..enumerations.setor import Setor
-=======
-
-from ..enumerations.setor import Setor
-from ..enumerations.status_evento import StatusEvento
->>>>>>> 6ba585b (Mudando de brain..comite necessário)
 from .base import Base
 from .modalidade import Modalidade
 from django.core.exceptions import ValidationError
@@ -34,10 +29,7 @@ class Evento(Base):
         verbose_name="status do evento",
         help_text="informe o status do evento",
         max_length=20,
-<<<<<<< HEAD
         default=StatusEvento.EM_PLANEJAMENTO,
-=======
->>>>>>> 6ba585b (Mudando de brain..comite necessário)
     )
     carga_horaria = models.PositiveIntegerField(
         verbose_name="carga horária",
@@ -57,7 +49,6 @@ class Evento(Base):
     )
 
     # futuramente, fazer relacionamento com local
-<<<<<<< HEAD
     class Meta:
         permissions = [
             ("coordenar_evento", "Pode coordenar este evento"),
@@ -92,8 +83,9 @@ class Evento(Base):
 
         if errors:
             raise ValidationError(errors)
-=======
 
-    def __str__(self):
-        return f"{self.nome}"
->>>>>>> 6ba585b (Mudando de brain..comite necessário)
+
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ("id", "nome", "status_evento", "setor", "carga_horaria")
+    list_filter = ("status_evento", "setor")
+    search_fields = ("nome", "tema")

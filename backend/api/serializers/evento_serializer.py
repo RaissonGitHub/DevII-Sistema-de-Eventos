@@ -9,11 +9,4 @@ class EventoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evento
-<<<<<<< HEAD
-        fields = ["id","nome","descricao","carga_horaria","setor","tema"]
-    
-    
-
-=======
         fields = "__all__"
->>>>>>> 6ba585b (Mudando de brain..comite necessário)
