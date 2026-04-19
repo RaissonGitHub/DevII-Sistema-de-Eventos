@@ -11,3 +11,4 @@ from .local import *
 from .modalidade import *
 from .resposta import *
 from .sessao import *
+from .perfil import *

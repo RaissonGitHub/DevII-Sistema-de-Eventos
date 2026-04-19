@@ -12,6 +12,7 @@ from .models import (
     Modalidade,
     Resposta,
     Sessao,
+    Perfil,
 )
 
 from .models.arquivo import ArquivoAdmin
@@ -27,6 +28,7 @@ admin.site.register(CriterioAvaliacao)
 admin.site.register(Resposta)
 admin.site.register(Espaco)
 admin.site.register(Sessao)
+admin.site.register(Perfil)
 
 # registros com ModelAdmin customizado
 admin.site.register(Arquivo, ArquivoAdmin)
