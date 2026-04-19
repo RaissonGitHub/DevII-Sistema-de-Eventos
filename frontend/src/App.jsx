@@ -49,7 +49,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/permissoesGrupos" element={protegido(<PermissoesGroups />, ADMIN_GROUPS)} />
                 <Route path="/usuarioGrupos" element={protegido(<PessoasGrupos />, ADMIN_GROUPS)} />
-                <Route path="/adicionarLocal" element={protegido(<LocalForm />, ADMIN_GROUPS)} />
+                {/*<Route path="/adicionarLocal" element={protegido(<LocalForm />, ADMIN_GROUPS)} />*/}
                 <Route path="/listarLocaisEspacos" element={protegido(<LocaisEspacosListar />, ADMIN_GROUPS)} />
                 <Route path="/editarLocal/:id" element={protegido(<LocalForm />, ADMIN_GROUPS)} />
                 <Route path="/adicionarEspaco" element={protegido(<EspacoForm />, ADMIN_GROUPS)} />

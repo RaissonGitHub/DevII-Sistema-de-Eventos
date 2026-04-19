@@ -17,6 +17,7 @@ import {
     MdAccessTime,
     MdBusiness,
     MdInfoOutline,
+    MdLocationOn
 } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../components/nav_bar/NavBar';
@@ -26,7 +27,7 @@ import { listarEventos, deletarEvento,atualizarEvento } from '../services/evento
 import { API_URL } from '../config';
 import eArray from '../utils/eArray';
 import Alerta from '../components/common/Alerta'
-import ModalConfirmacao from '../components/common/ModalConfirmacaoExclusao';
+import ModalPopup from '../components/common/ModalPopup'
 
 
 export default function EventosListar() {
@@ -188,6 +189,14 @@ export default function EventosListar() {
                                                             </strong>{' '}
                                                             {evento.setor}
                                                         </span>
+
+                                                        <span className="d-flex align-items-center gap-1">
+                                                            <MdLocationOn />{' '}
+                                                            <strong>
+                                                                Local:
+                                                            </strong>{' '}
+                                                            {evento.local?.nome || "Carregando..."}
+                                                        </span>
                                                     </div>
                                                 </div>
 
@@ -279,17 +288,7 @@ export default function EventosListar() {
                         </Container>
                     </Card>
 
-                    {/* Voltar */}
-                    <div className="d-flex justify-content-end mt-4">
-                        <Button
-                            onClick={() => navigate(-1)}
-                            variant="outline-secondary"
-                            className="d-flex align-items-center gap-2 px-4 py-2"
-                        >
-                            <MdArrowBack /> Voltar
-                        </Button>
-                        
-                    </div>
+                    
                     {mensagem &&(
                         <div>
                             <Alerta
@@ -308,12 +307,17 @@ export default function EventosListar() {
                 ano={2026}
                 campus="Campus Restinga"
             />
-            <ModalConfirmacao 
+            <ModalPopup
                 show={showModal}
-                handleClose={() => setShowModal(false)}
-                handleConfirm={excluirEvento}
-                titulo="Excluir Evento"
-                mensagem={`Deseja realmente excluir o evento "${eventoParaExcluir?.nome}"?`}
+                titulo={`${eventoParaExcluir?.nome}` || 'Excluir Evento'}
+                tituloSecundario=''
+                texto='Quer realmente excluir o evento?'
+                textoFechar='Voltar'
+                onFechar={()=> setShowModal(false)}
+                textoAcao='excluir'
+                onAcao={excluirEvento}
+                variante='danger'
+
             />
         </div>
     );

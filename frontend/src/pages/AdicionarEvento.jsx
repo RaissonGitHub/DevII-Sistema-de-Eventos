@@ -20,8 +20,11 @@ export default function CriarEvento() {
     const [tema, setTema] = useState('');
     const [opcoes, setOpcoes] = useState({ status: [], setores: [] });
     const [errors, setErrors] = useState({});
+    const [locais, setLocais] = useState([]);
+    const [localId, setLocalId] = useState('')
     const [exibirSucesso, setExibirSucesso] = useState(false);
-
+    const [exibirErro,setExibirErro]= useState(false)
+    
     useEffect(() => {
         const carregarDados = async () => {
             try {
@@ -35,6 +38,7 @@ export default function CriarEvento() {
                     setTema(evento.tema || '');
                     setSetor(evento.setor || '');
                     setCargaHoraria(evento.carga_horaria || 0);
+                    setLocalId(evento.local || '');
                 }
             } catch (error) {
                 console.error("Erro ao carregar dados:", error);
@@ -44,9 +48,16 @@ export default function CriarEvento() {
     }, [id]);
 
     const handleSalvar = async () => {
+        if(!localId){
+        setErrors({ local: ["O local é obrigatório."] });
+        setExibirErro(true);
+        return;
+        }
+
         setErrors({});
         setExibirSucesso(false);
-
+        setExibirErro(false)
+        const local = parseInt(localId)
         const dadosEvento = {
             nome,
             descricao,
@@ -54,6 +65,7 @@ export default function CriarEvento() {
             carga_horaria,
             setor,
             tema,
+            local_id: localId
         };
 
         try {
@@ -71,6 +83,7 @@ export default function CriarEvento() {
         } catch (erro) {
             if (erro.response && erro.response.data) {
                 setErrors(erro.response.data);
+                setExibirErro(true)
             }
         }
     };
@@ -96,6 +109,11 @@ export default function CriarEvento() {
                                 errors={errors}
                                 opcoes={opcoes}
                                 exibirSucesso={exibirSucesso}
+                                exibirErro={exibirErro}
+                                locais={locais}
+                                setLocais={setLocais}
+                                localId={localId}
+                                setLocalId={setLocalId}
                                 handleSalvar={handleSalvar}
                                 navigate={navigate}
                                 id={id}
