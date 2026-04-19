@@ -21,6 +21,9 @@ import ModalidadesListar from './pages/ModalidadesListar';
 import DefinirCoordenadorEvento from './pages/DefinirCoordenadorEvento';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import DefinirOrganizadorEvento from './pages/DefinirOrganizadorEvento';
+import AdicionarAtracao from './pages/AdicionarAtracao';
+import ListarAtracoes from './pages/ListarAtracoes';
+import ListarInscritos from './pages/ListarInscritos';
 
 function App() {
     const ADMIN_GROUPS = ['Administrador', 'Coordenador'];
@@ -72,6 +75,11 @@ function App() {
                 <Route path="/listarLocais" element={protegido(<LocaisListar />, ADMIN_GROUPS)} />
                 <Route path="/adicionarEspaco" element={protegido(<EspacoForm />, ADMIN_GROUPS)} />
                 <Route path="/editarEspaco/:id" element={protegido(<EspacoForm />, ADMIN_GROUPS)} />
+
+                {/* Atracoes & Inscritos */}
+                <Route path="/listarAtracoes" element={protegido(<ListarAtracoes />, ADMIN_GROUPS)} />
+                <Route path="/adicionarAtracao" element={protegido(<AdicionarAtracao />, ADMIN_GROUPS)} />
+                <Route path="/listarInscritos" element={protegido(<ListarInscritos />, ADMIN_GROUPS)} />
 
                 {/* Permissoes / Grupos / Pessoas */}
                 <Route path="/permissoesGrupos" element={protegido(<PermissoesGroups />, ADMIN_GROUPS)} />
