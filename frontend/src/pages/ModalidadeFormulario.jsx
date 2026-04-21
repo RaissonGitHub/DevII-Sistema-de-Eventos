@@ -107,6 +107,9 @@ export default function ModalidadeFormulario({ campus = 'Campus Restinga' }) {
                 );
                 setEmiteCertificado(Boolean(modalidadeData?.emite_certificado));
                 setLimiteVagas(Number(modalidadeData?.limite_vagas || 0));
+                setLimiteAvaliadores(
+                    Number(modalidadeData?.limite_avaliadores || 0),
+                );
                 setCamposIniciais(
                     campos.filter(
                         (campo) => Number(campo.modalidade) === Number(id),
