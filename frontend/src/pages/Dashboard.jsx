@@ -110,16 +110,16 @@ export default function DashboardEvento({}) {
             <main className="flex-fill py-4 mx-auto">
                 <Container fluid>
                     <Row>
-                        <Col className="d-flex gap-5">
-                            <h2 className="fw-semibold">
+                        <Col className="d-flex flex-xl-row gap-5 flex-column">
+                            <h2 className="fw-semibold text-center">
                                 Visão Geral do Evento
                             </h2>
-                            <div className="d-flex gap-3">
+                            <div className="d-flex flex-xl-row flex-column gap-3">
                                 <Button
                                     variant="secondary"
                                     as={Link}
                                     to="/ListarEventos"
-                                    className="d-flex align-items-center"
+                                    className="d-flex align-items-center justify-content-center"
                                 >
                                     Mudar de Evento
                                 </Button>
@@ -127,7 +127,7 @@ export default function DashboardEvento({}) {
                                     variant="primary"
                                     as={Link}
                                     to="#"
-                                    className="d-flex align-items-center"
+                                    className="d-flex align-items-center justify-content-center"
                                 >
                                     Analisar Usuários
                                 </Button>
@@ -136,7 +136,7 @@ export default function DashboardEvento({}) {
                                     style={{ background: '#05C978' }}
                                     as={Link}
                                     to="#"
-                                    className="d-flex align-items-center border-0"
+                                    className="d-flex align-items-center border-0 justify-content-center"
                                 >
                                     Inscrições Evento
                                 </Button>
@@ -144,7 +144,7 @@ export default function DashboardEvento({}) {
                                     variant="success"
                                     as={Link}
                                     to="#"
-                                    className="d-flex align-items-center"
+                                    className="d-flex align-items-center justify-content-center"
                                 >
                                     Inscrições Atrações
                                 </Button>
@@ -152,7 +152,7 @@ export default function DashboardEvento({}) {
                         </Col>
                     </Row>
                     <Row>
-                        <Col className="d-flex gap-5 mt-4">
+                        <Col className="d-xl-flex flex-xl-row d-none gap-5 mt-4">
                             <Card corBorda="#003366" largura={400} altura={200}>
                                 <Container className="px-4 pt-4">
                                     <Row>
@@ -230,14 +230,14 @@ export default function DashboardEvento({}) {
                             </Card>
                         </Col>
                     </Row>
-                    <Row className="mt-5">
-                        <Col xs={7}>
+                    <Row className="mt-5 d-flex flex-lg-row flex-column">
+                        <Col xl={7} sm={0}>
                             <BarrasStatus
                                 titulo="Status das Avaliações por Área"
                                 dados={dados}
                             />
                         </Col>
-                        <Col>
+                        <Col className="mt-3 mt-xl-0">
                             <MenuColuna titulo="Ações" itens={links} />
                         </Col>
                     </Row>
