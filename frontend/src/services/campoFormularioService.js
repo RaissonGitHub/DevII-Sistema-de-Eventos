@@ -1,57 +1,22 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-import { pegarTokenCsrf } from './csrfService';
+// Mock campoFormularioService
 
-export const pegarCampoFormulario = async () => {
-    const response = await axios.get(`${API_URL}/api/campo_formulario/`);
-    return response.data;
-};
+export const pegarCampoFormulario = async () =>
+    Promise.resolve([
+        { id: 1, nome: 'Título', tipo: 'string', obrigatorio: true },
+        { id: 2, nome: 'Resumo', tipo: 'text', obrigatorio: true },
+    ]);
 
-export const criarCampoFormulario = async (dados) => {
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.post(
-        `${API_URL}/api/campo_formulario/`,
-        dados,
-        {
-            headers: { 'X-CSRFToken': csrfToken },
-        },
-    );
-    return response.data;
-};
+export const criarCampoFormulario = async (dados) => Promise.resolve({ id: Date.now(), ...dados });
 
 export const atualizarCampoFormulario = async (id, dados) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.put(
-        `${API_URL}/api/campo_formulario/${id}/`,
-        dados,
-        {
-            headers: { 'X-CSRFToken': csrfToken },
-        },
-    );
-
-    return response.data;
+    return Promise.resolve({ id, ...dados });
 };
 
 export const deletarCampoFormulario = async (id) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.delete(
-        `${API_URL}/api/campo_formulario/${id}/`,
-        {
-            headers: { 'X-CSRFToken': csrfToken },
-        },
-    );
-
-    return response.data;
+    return Promise.resolve({ success: true, id });
 };
 
-export const pegarOptionsCampoFormulario = async () => {
-    const response = await axios.options(`${API_URL}/api/campo_formulario/`);
-    return response.data;
-};
+export const pegarOptionsCampoFormulario = async () =>
+    Promise.resolve({ actions: { POST: { nome: { required: true, type: 'string' } } } });

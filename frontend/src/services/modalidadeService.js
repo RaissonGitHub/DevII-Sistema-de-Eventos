@@ -1,67 +1,33 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-import { pegarTokenCsrf } from './csrfService';
-import { validarComOptions } from './optionValidadorService';
+// Mock modalidadeService
 
-export const pegarModalidades = async () => {
-    const response = await axios.get(`${API_URL}/api/modalidades/`);
-    return response.data;
-};
+export const pegarModalidades = async () =>
+    Promise.resolve([
+        { id: 1, nome: 'Comunicação Científica' },
+        { id: 2, nome: 'Apresentação Oral' },
+    ]);
 
 export const pegarModalidade = async (id) => {
     if (!id) return null;
-
-    const response = await axios.get(`${API_URL}/api/modalidades/${id}/`);
-    return response.data;
+    return Promise.resolve({ id, nome: `Modalidade ${id}` });
 };
 
-export const criarModalidade = async (dados) => {
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.post(`${API_URL}/api/modalidades/`, dados, {
-        headers: { 'X-CSRFToken': csrfToken },
-    });
-    return response.data;
-};
+export const criarModalidade = async (dados) => Promise.resolve({ id: Date.now(), ...dados });
 
 export const atualizarModalidade = async (id, dados) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.put(
-        `${API_URL}/api/modalidades/${id}/`,
-        dados,
-        {
-            headers: { 'X-CSRFToken': csrfToken },
-        },
-    );
-
-    return response.data;
+    return Promise.resolve({ id, ...dados });
 };
 
 export const deletarModalidade = async (id) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.delete(`${API_URL}/api/modalidades/${id}/`, {
-        headers: { 'X-CSRFToken': csrfToken },
-    });
-
-    return response.data;
+    return Promise.resolve({ success: true, id });
 };
 
-export const pegarOptionsModalidades = async () => {
-    const response = await axios.options(`${API_URL}/api/modalidades/`);
-    return response.data;
-};
+export const pegarOptionsModalidades = async () =>
+    Promise.resolve({ actions: { POST: { nome: { required: true, type: 'string' } } } });
 
-export const validarModalidade = async (payload, method = 'POST') =>
-    validarComOptions('/api/modalidades/', payload, method);
+export const validarModalidade = async (payload, method = 'POST') => ({ valido: true, erros: {} });
 
-export const validarCampoFormulario = async (payload, method = 'POST') =>
-    validarComOptions('/api/campo_formulario/', payload, method);
+export const validarCampoFormulario = async (payload, method = 'POST') => ({ valido: true, erros: {} });
 
-export const validarCriterioAvaliacao = async (payload, method = 'POST') =>
-    validarComOptions('/api/criterio_avaliacao/', payload, method);
+export const validarCriterioAvaliacao = async (payload, method = 'POST') => ({ valido: true, erros: {} });

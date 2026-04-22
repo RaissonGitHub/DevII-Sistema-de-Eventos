@@ -1,53 +1,22 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-import { pegarTokenCsrf } from './csrfService';
+// Mock gruposService
 
-export const pegarGrupos = async () => {
-    const response = await axios.get(`${API_URL}/api/grupos/`);
-    return response.data;
-};
+export const pegarGrupos = async () =>
+    Promise.resolve([
+        { id: 1, name: 'Coordenadores' },
+        { id: 2, name: 'Organizadores' },
+    ]);
 
 export const pegarGrupo = async (id) => {
     if (!id) return null;
-    const response = await axios.get(`${API_URL}/api/grupos/${id}/`);
-    return response.data;
+    return Promise.resolve({ id, name: `Grupo ${id}` });
 };
 
 export const atualizarPermissoes = async (id, idPerms) => {
     if (!id) return null;
-    // obter token CSRF e enviar no cabeçalho da requisição
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.patch(
-        `${API_URL}/api/grupos/${id}/`,
-        {
-            permission_id: idPerms,
-        },
-        {
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        },
-    );
-    return response.data;
+    return Promise.resolve({ id, permission_id: idPerms });
 };
 
 export const atualizarUsuarios = async (id, idUsers) => {
     if (!id) return null;
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-    const response = await axios.patch(
-        `${API_URL}/api/grupos/${id}/`,
-        {
-            user_id: idUsers,
-        },
-        {
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        },
-    );
-    return response.data;
+    return Promise.resolve({ id, user_id: idUsers });
 };
