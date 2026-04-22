@@ -1,7 +1,7 @@
-import { API_URL } from '../config';
-import axios from 'axios';
+// Mock tipoCampoService
 
-export const pegarTipoCampo = async () => {
-    const response = await axios.get(`${API_URL}/api/tipo_campo/`);
-    return response.data;
-};
+export const pegarTipoCampo = async () =>
+    Promise.resolve([
+        { value: 'string', display: 'Texto' },
+        { value: 'integer', display: 'Número inteiro' },
+    ]);

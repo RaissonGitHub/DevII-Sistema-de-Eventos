@@ -1,62 +1,22 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-import { pegarTokenCsrf } from './csrfService';
+// Mock user service
 
-export const pegarUsers = async () => {
-    const response = await axios.get(`${API_URL}/api/users/`, {
-        withCredentials: true,
-    });
-    return response.data;
-};
+export const pegarUsers = async () =>
+    Promise.resolve([
+        { id: 1, nome: 'João Silva', email: 'joao@example.com' },
+        { id: 2, nome: 'Maria Souza', email: 'maria@example.com' },
+    ]);
 
 export const pegarUser = async (id) => {
     if (!id) return null;
-    const response = await axios.get(`${API_URL}/api/users/${id}/`, {
-        withCredentials: true,
-    });
-    return response.data;
+    return Promise.resolve({ id, nome: `Usuário ${id}`, email: `user${id}@example.com` });
 };
 
 export const atualizarGrupos = async (id, idGroups) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-
-    const response = await axios.patch(
-        `${API_URL}/api/users/${id}/`,
-        {
-            group_id: idGroups,
-        },
-        {
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        },
-    );
-
-    return response.data;
+    return Promise.resolve({ id, grupos: idGroups });
 };
 
 export const atualizarPermissoesUsers = async (id, idPerms) => {
     if (!id) return null;
-
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-
-    const response = await axios.patch(
-        `${API_URL}/api/users/${id}/`,
-        {
-            permission_id: idPerms,
-        },
-        {
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            withCredentials: true,
-        },
-    );
-
-    return response.data;
+    return Promise.resolve({ id, permissoes: idPerms });
 };

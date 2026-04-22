@@ -1,10 +1,6 @@
-import { API_URL } from '../config';
-import axios from 'axios';
-
-export const pegarPermissoes = async () => {
-    const response = await axios.get(`${API_URL}/api/permissoes/`, {
-        withCredentials: true,
-    });
-    const data = response.data;
-    return data;
-};
+// Mock permissoesService
+export const pegarPermissoes = async () =>
+    Promise.resolve([
+        { id: 1, codename: 'add_event', name: 'Adicionar evento' },
+        { id: 2, codename: 'change_event', name: 'Alterar evento' },
+    ]);

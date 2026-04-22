@@ -1,70 +1,39 @@
-import axios from 'axios';
-import { pegarTokenCsrf } from './csrfService';
-
-const API_URL = 'http://localhost:8000/api/atracoes/';
+// Mock implementations: retornam objetos/arrays de exemplo para desenvolvimento
 
 export const listarAtracoes = async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+    return Promise.resolve([
+        { id: 1, titulo: 'Palestra: Futuro Digital', evento: 1, equipe: [], status: 'rascunho' },
+        { id: 2, titulo: 'Oficina: Introdução ao Linux', evento: 1, equipe: [], status: 'aprovado' },
+    ]);
 };
 
 export const criarAtracao = async (dados) => {
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-
-    const payload = new FormData();
-    Object.keys(dados).forEach(key => {
-        if (key === 'equipe') {
-            payload.append('equipe_json', JSON.stringify(dados[key]));
-        } else if (dados[key] !== null && dados[key] !== undefined) {
-            payload.append(key, dados[key]);
-        }
-    });
-
-    const response = await axios.post(API_URL, payload, {
-        headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'multipart/form-data'
-        },
-        withCredentials: true,
-    });
-    return response.data;
+    const novo = { id: Date.now(), ...dados, status: 'rascunho' };
+    return Promise.resolve(novo);
 };
 
 export const salvarRascunho = async (dados) => {
-    const csrfData = await pegarTokenCsrf();
-    const csrfToken = csrfData?.csrfToken || '';
-
-    const payload = new FormData();
-    Object.keys(dados).forEach(key => {
-        if (key === 'equipe') {
-            payload.append('equipe_json', JSON.stringify(dados[key]));
-        } else if (dados[key] !== null && dados[key] !== undefined) {
-            payload.append(key, dados[key]);
-        }
-    });
-
-    const response = await axios.post(API_URL, payload, {
-        headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'multipart/form-data'
-        },
-        withCredentials: true,
-    });
-    return response.data;
+    const rascunho = { id: Date.now(), ...dados, status: 'rascunho' };
+    return Promise.resolve(rascunho);
 };
 
 export const buscarOpcoesAtracao = async () => {
-    const response = await axios.get('http://localhost:8000/api/atracoes/opcoes/');
-    return response.data;
+    return Promise.resolve({
+        tipos: [{ value: 'palestra', display: 'Palestra' }, { value: 'oficina', display: 'Oficina' }],
+        setores: [{ value: 1, display: 'Computação' }, { value: 2, display: 'Humanas' }],
+    });
 };
 
 export const buscarEventos = async () => {
-    const response = await axios.get('http://localhost:8000/api/eventos/');
-    return response.data;
+    return Promise.resolve([
+        { id: 1, nome: 'Semana da Tecnologia 2026' },
+        { id: 2, nome: 'Jornada de Pesquisa 2026' },
+    ]);
 };
 
 export const buscarUsuarios = async () => {
-    const response = await axios.get('http://localhost:8000/api/users/');
-    return response.data;
+    return Promise.resolve([
+        { id: 1, nome: 'João Silva', email: 'joao@example.com' },
+        { id: 2, nome: 'Maria Souza', email: 'maria@example.com' },
+    ]);
 };

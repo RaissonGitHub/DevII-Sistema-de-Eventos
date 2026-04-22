@@ -1,8 +1,10 @@
-const API_URL = import.meta.env.VITE_API_URL;
-
+// Mock dashboard data
 export async function getDashboard() {
-    const response = await fetch(`${API_URL}/api/dashboard/`);
-    return response.json();
+    return Promise.resolve({
+        total_eventos: 5,
+        total_participantes: 320,
+        proximos_eventos: [{ id: 1, nome: 'Semana da Tecnologia 2026' }],
+    });
 }
 
 ///alterar para env do Bruno///
